@@ -1,0 +1,67 @@
+body{
+	font-family: sans-serif;
+	font-size: 10px;
+	background: #005;
+	color: #0f0;
+}
+textarea{
+	width:100%;
+}
+div, input, button, textarea{
+	box-sizing: border-box;
+	overflow: hidden;
+}
+button,a{
+	display: block;
+	width:100%;
+	border: none;
+	outline: none;
+	background: #ccc;
+	box-shadow: none;
+}
+a{
+	width: auto;
+	display:inline-block;
+	text-decoration: none;
+	padding: 5px;
+
+}
+button:hover, a:hover{
+	background: #555;
+}
+.notempty{
+	background: #0c0;
+	color: #cfc;
+}
+.table{
+	width:100%;
+	/*border: 1px solid red;*/
+}
+#mem{
+	width:70%;
+	float:left;
+	border-right: 1px solid black;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+#regs, #last-op, #input{
+	border-right: 1px solid red;
+	width:15%;
+	float:left;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+#mem > div,
+#regs > div,
+#last-op,
+#input{
+	padding: 2px 5px;
+}
+#mem > div{
+	border-right: 1px solid #070;
+	border-bottom: 1px solid #070;
+	width:10%;
+	float:left;
+}
+#regs > div,
+#last-op {
+	border-bottom: 1px dotted black;
+}
