@@ -61,11 +61,11 @@ $(function(){
 			})
 			.on('click touchstart', '#prev' , function(e){
 				e.preventDefault();
-				debgr({name:'none', type:'ready', offset: offset>Z80.mem.length/257 ? offset -=Z80.mem.length/255 : 0});
+				debgr({name:'none', type:'ready', offset: offset>Z80.mem.length/257 ? offset -=256 : 0});
 			})
 			.on('click touchstart', '#next' , function(e){
 				e.preventDefault();
-				debgr({name:'none', type:'ready', offset: offset<Z80.mem.length-(Z80.mem.length/257) ? offset +=Z80.mem.length/255: offset });
+				debgr({name:'none', type:'ready', offset: offset<Z80.mem.length-(Z80.mem.length/257) ? offset +=256: offset });
 			})
 			.on('click touchstart', '#exec' , function(e){
 				e.preventDefault();
