@@ -4,11 +4,20 @@ body{
 	background: #005;
 	color: #0f0;*/
 }
+.mt40{
+	margin-top: 40px;
+}
+:focus{
+	outline: none;
+};
 .pagination a{
 	font-size: 0.5rem;
 }
-textarea{
+#input textarea{
 /*	width:100%;*/
+min-height: 422px;
+background: #000;
+color: #bada55;
 }
 /*div, input, button, textarea{
 	box-sizing: border-box;
@@ -33,8 +42,8 @@ button:hover, a:hover{
 	background: #555;
 }
 .notempty{
-	background: #0c0;
-	color: #cfc;
+	background: #bada55;
+/*	color: white;*/
 }
 .table{
 /*	width:100%;*/
