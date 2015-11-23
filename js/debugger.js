@@ -1,7 +1,6 @@
 var debug=true,
 offset=0,
-select = [],
-paginate_by=2048;
+paginate_by=256;
 page_elements = Z80.mem.length/paginate_by;
 var debgr = function(obj){
 	var css_class='notempty';
@@ -26,7 +25,49 @@ var debgr = function(obj){
 				, '</span></div>'
 				].join(''));
 		}
-	// }		
+	// }
+	return obj.offset;		
+}
+var paginate = function(offset){
+	var current_page = Math.floor(offset/paginate_by),
+	select = [];
+		select.push(['<li><a href="#" class="',!current_page?'disabled ':'',' js-pageprev" aria-label="Prev page">Prev <span class="show-for-sr">page</span></a></li>','<li><a href="#" class="',!current_page===limit?'disabled ':'','js-pagenext" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>'].join(''));
+		var limit = Math.floor((Z80.mem.length-1)/paginate_by), middle_page = Math.floor(limit /2);
+
+		for (i=0; i<limit; i++){
+			
+			if(i<current_page+6 && i>current_page-6 && i>=0){
+				console.log(offset);
+				select.push([
+					'<li><a ',i===current_page?'class="current"':'','data-page="'
+					, i*paginate_by
+					,'">'
+					, i
+					,'</a></li>'
+					].join(''));
+			} else if (i===0){
+				select.push([
+					'<li><a ',i===current_page?'class="current"':'','data-page="'
+					, i*paginate_by
+					,'">'
+					, i
+					,'</a></li>'
+					,'<li><span class="disabled">...</span></li>'
+					].join(''));
+			} else if(i===limit-1){
+				select.push([
+					'<li><span class="disabled">...</span></li>'
+					,'<li><a ',i===current_page?'class="current"':'','data-page="'
+					, i*paginate_by
+					,'">'
+					, i
+					,'</a></li>'
+					].join(''));
+			}
+		}
+		
+		$('#select').html(select);
+		select = [];
 }
 $(function(){
 	if(debug){
@@ -59,22 +100,10 @@ $(function(){
 
 				'</div>',				
 			'</div>',
-			'<div class="reveal" id="oplist" data-reveal data-animation-in="spin-in" data-animation-out="spin-out">',
+			'<div class="reveal" id="oplist" data-reveal >',
 			'</div>'
 			].join(''));
-		select.push('<li><a href="#" class="disabled js-pageprev" aria-label="Prev page">Prev <span class="show-for-sr">page</span></a></li>');
-		for (i=0; i<Z80.mem.length/(paginate_by+1); i++){
-			select.push([
-				'<li><a ',!i?'class="current"':'','data-page="'
-				, i*paginate_by
-				,'">'
-				, i
-				,'</a></li>'
-				].join(''));
-		}
-		select.push('<li><a href="#" class="js-pagenext" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>');
-		$('#select').append(select);
-		select = []; 
+		paginate(0);
 		var oplist = [
 		'<p class="lead">Available operations:</p>',
 		'<p>In this table: on the left hexadecial code of the Operation, on the right </p>',
@@ -101,7 +130,7 @@ $(function(){
 				'</button>',
 				].join(''));
 		$('#oplist').html(oplist.join(''));
-		debgr({name:'', type:'ready', offset: 0 });
+		paginate(debgr({name:'', type:'ready', offset: 0 }));
 		$(document).foundation();
 		$(document)
 			.on('op', function(e,obj){
@@ -110,28 +139,26 @@ $(function(){
 			.on('click touchstart', '.js-pageprev' , function(e){
 				e.preventDefault();
 				$('[data-page]').removeClass('current');
-				$('.js-pagenext').removeClass('disabled');
-				if(offset>Z80.mem.length/(paginate_by+1)) {
+				if(offset>paginate_by) {
 					$(this).removeClass('disabled');
 					offset -=paginate_by;
 				}else{
 					offset =0;
 					$(this).addClass('disabled');
 				}		
-				debgr({name:'', type:'ready', offset: offset});
+				paginate(debgr({name:'', type:'ready', offset: offset}));
 				$('[data-page="' + offset + '"]').addClass('current');
 			})
 			.on('click touchstart', '.js-pagenext' , function(e){
 				e.preventDefault();
 				$('[data-page]').removeClass('current');
-				$('.js-pageprev').removeClass('disabled');
-				if(offset<=Z80.mem.length-(Z80.mem.length/(paginate_by+1))) {
+				if(offset<=Z80.mem.length-paginate_by) {
 					$(this).removeClass('disabled');
 					offset +=paginate_by;
 				}else{
 					$(this).addClass('disabled');
 				}
-				debgr({name:'', type:'ready', offset: offset });
+				paginate(debgr({name:'', type:'ready', offset: offset }));
 				$('[data-page="' + offset + '"]').addClass('current');
 			})
 			.on('click touchstart', '.js-exec' , function(e){
@@ -155,7 +182,7 @@ $(function(){
 				}
 				$('[data-page]').removeClass('current');
 				$(this).addClass('current');
-				debgr({name:'', type:'ready', offset: offset });
+				paginate(debgr({name:'', type:'ready', offset: offset }));
 			});
 	}
 });

@@ -1179,7 +1179,7 @@ var Z80 = {
 					this.f.shift();
 					Z80.fetch();
 					} else {
-						this.f = [];
+						return						
 					}
 			}
 		},

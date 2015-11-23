@@ -4,6 +4,10 @@ body{
 	background: #005;
 	color: #0f0;*/
 }
+.pagination li{
+	min-width: 45px;
+	text-align: center;
+}
 .mt40{
 	margin-top: 40px;
 }

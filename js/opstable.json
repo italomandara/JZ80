@@ -1,6 +1,6 @@
 var ops_table = {
-0x00:{name:"nop",description:"No description set"}, 
-0x01:{name:"ld bc,nn",description:"No description set"}, 
+0x00:{name:"nop",description:"Does nothing"}, 
+0x01:{name:"ld bc,nn",description:"load 2 bytes in bc register"}, 
 0x02:{name:"ld (bc),a",description:"No description set"}, 
 0x03:{name:"inc bc",description:"No description set"}, 
 0x04:{name:"inc b",description:"No description set"}, 
