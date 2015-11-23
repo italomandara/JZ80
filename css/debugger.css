@@ -1,29 +1,32 @@
 body{
-	font-family: sans-serif;
+/*	font-family: sans-serif;
 	font-size: 10px;
 	background: #005;
-	color: #0f0;
+	color: #0f0;*/
+}
+.pagination a{
+	font-size: 0.5rem;
 }
 textarea{
-	width:100%;
+/*	width:100%;*/
 }
-div, input, button, textarea{
+/*div, input, button, textarea{
 	box-sizing: border-box;
 	overflow: hidden;
-}
+}*/
 button,a{
-	display: block;
-	width:100%;
-	border: none;
+/*	display: block;*/
+/*	width:100%;*/
+/*	border: none;
 	outline: none;
 	background: #ccc;
-	box-shadow: none;
+	box-shadow: none;*/
 }
 a{
-	width: auto;
+/*	width: auto;
 	display:inline-block;
 	text-decoration: none;
-	padding: 5px;
+	padding: 5px;*/
 
 }
 button:hover, a:hover{
@@ -34,19 +37,20 @@ button:hover, a:hover{
 	color: #cfc;
 }
 .table{
-	width:100%;
+/*	width:100%;*/
 	/*border: 1px solid red;*/
 }
-#mem{
-	width:70%;
+#mem,#regs{
+/*	width:70%;
 	float:left;
-	border-right: 1px solid black;
+	border-right: 1px solid black;*/
 	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 0.8rem;
 }
-#regs, #last-op, #input{
+#regs, #last-op{
 	border-right: 1px solid red;
-	width:15%;
-	float:left;
+/*	width:15%;*/
+	/*float:left;*/
 	font-family: "Lucida Console", Monaco, monospace;
 }
 #mem > div,
@@ -58,8 +62,8 @@ button:hover, a:hover{
 #mem > div{
 	border-right: 1px solid #070;
 	border-bottom: 1px solid #070;
-	width:10%;
-	float:left;
+/*	width:10%;*/
+/*	float:left;*/
 }
 #regs > div,
 #last-op {
