@@ -86,7 +86,7 @@ $(function(){
 					'</ul>',
 				'</div>',
 			'</div>',
-			'<div class="row mt40"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div>',
+			'<div class="row mt40"><div class="hide float-left"><label>Paginate by<input class="js-paginate-by" type="number" value="' , paginate_by , '"></label></div><div class="float-left"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div></div>',
 			'<div class="row">',
 				'<div class="medium-6 large-7 column" ><div id="mem" class="row"></div></div>',
 				'<div id="regs" class="medium-3 large-2 column" ></div>',
@@ -98,7 +98,7 @@ $(function(){
 
 				'</div>',				
 			'</div>',
-			'<div class="reveal" id="oplist" data-reveal >',
+			'<div class="reveal" id="oplist" data-reveal data-animation-in="fade-in" data-animation-out="fade-out">',
 			'</div>'
 			].join(''));
 		paginate(0);
@@ -180,6 +180,9 @@ $(function(){
 				}
 				$('[data-page]').removeClass('current');
 				$(this).addClass('current');
+				paginate(debgr({name:'', type:'ready', offset: offset }));
+			}).on('change','.js-paginate-by', function(){
+				paginate_by = $(this).val();
 				paginate(debgr({name:'', type:'ready', offset: offset }));
 			});
 	}
