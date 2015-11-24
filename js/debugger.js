@@ -9,7 +9,6 @@ var debgr = function(obj){
 	for(key in Z80.reg){
 		$('#regs').append(['<div class="', Z80.reg[key] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '</div>'].join(''));
 	}
-	// if(obj.type === 'ready'){
 		$('#last-op').html('');
 		$('#mem').html('');
 		for (i=offset; i<Z80.mem.length/page_elements+offset; i++){
@@ -25,7 +24,6 @@ var debgr = function(obj){
 				, '</span></div>'
 				].join(''));
 		}
-	// }
 	return obj.offset;		
 }
 var paginate = function(offset){
