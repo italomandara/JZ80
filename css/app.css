@@ -2467,7 +2467,7 @@ body {
   .pagination::after {
     clear: both; }
   .pagination li {
-    font-size: 1.16667rem;
+    font-size: 0.83333rem;
     margin-right: 0.08333rem;
     display: none;
     border-radius: 2px; }

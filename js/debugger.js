@@ -35,7 +35,6 @@ var paginate = function(offset){
 		for (i=0; i<limit; i++){
 			
 			if(i<current_page+6 && i>current_page-6 && i>=0){
-				console.log(offset);
 				select.push([
 					'<li><a ',i===current_page?'class="current"':'','data-page="'
 					, i*paginate_by
