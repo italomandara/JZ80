@@ -58,13 +58,16 @@ color: #bada55;
 .notempty{
 	background: #bada55;
 }
-#mem,#regs{
+#mem,#regs, #mem input{
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 0.8rem;
 }
 #regs, #last-op{
 	border-right: 1px solid red;
 	font-family: "Lucida Console", Monaco, monospace;
+}
+#mem .input-group{
+	margin-bottom: 0;
 }
 #mem > div,
 #regs > div,

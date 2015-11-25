@@ -11,7 +11,7 @@ var binary = function(n,precision){
 			padding = "00000000";
 		}
 	}
-	n=n.toString(2);
+	n= typeof n !== typeof undefined ? n.toString(2) : 0;
 	return padding.substr(n.length)+n;
 }
 var hex = function(n,precision){

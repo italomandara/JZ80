@@ -13,23 +13,23 @@ var Z80 = {
 			var mask = 1 << pos;
 			return (num & mask) != 0 ? 1 : 0 ;
 		},
-		flag_S: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(7,Z80.reg.f[Z80.i.f],set);
+		flag_S: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(7,Z80.reg.f[Z80.i.f],state);
 		},
-		flag_Z: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(6,Z80.reg.f[Z80.i.f],set);
+		flag_Z: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(6,Z80.reg.f[Z80.i.f],state);
 		},
-		flag_H: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(4,Z80.reg.f[Z80.i.f],set);
+		flag_H: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(4,Z80.reg.f[Z80.i.f],state);
 		},
-		flag_PV: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(2,Z80.reg.f[Z80.i.f],set);
+		flag_PV: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(2,Z80.reg.f[Z80.i.f],state);
 		},
-		flag_N: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(1,Z80.reg.f[Z80.i.f],set);
+		flag_N: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(1,Z80.reg.f[Z80.i.f],state);
 		},
-		flag_C: function(set){
-			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(0,Z80.reg.f[Z80.i.f],set);
+		flag_C: function(state){
+			Z80.reg.f[Z80.i.f] = Z80.utils.setBit(0,Z80.reg.f[Z80.i.f],state);
 		},
 	},
 	core: {
@@ -355,7 +355,7 @@ var Z80 = {
 		// },
 		0x3e: function(name) { // LD A *
 			Z80.core.ld8toReg('a',Z80.mmu.rb(Z80.reg.pc+1));			
-			return 0x06;
+			return 0x3e;
 		},
 		// 0x3f: function(name){//nop
 		// 	
@@ -1152,10 +1152,16 @@ var Z80 = {
 
 		i: 0,
 		r: 0,
+		m: 0,
+		t: 0,
 		ix: 0,
 		iy: 0,
 		sp: 0, //16bit
 		pc: 0 //16bit
+	},
+	clock: {
+		m: 0,
+		t: 0,
 	},
 	mem: new Uint8ClampedArray(65535),
 	mmu: {
@@ -1175,7 +1181,7 @@ var Z80 = {
 			return name;
 		}, 
 	},
-	IR: { // INSTRUCTION REGISTER
+	IR: {
 		f: [],
 		exec: function(name){
 			if (typeof this.f[0] === 'function'){
@@ -1190,18 +1196,32 @@ var Z80 = {
 			}
 		},
 	},
-	fetch: function(name){
+	fetch: function(){
 		Z80.IR.f.push(Z80.op[Z80.mmu.rb(Z80.reg.pc)]);
 	},
-	clk: setInterval(function(){Z80.IR.exec();},1500),
-	reset: function(name){
+	clk: setInterval(function(){Z80.IR.exec();},1000),
+	reset: function(){
 		Z80.IR.f = [];
-		for(key in Z80.reg){
-			Z80.reg[key] = 0;
-		}
-		for (i=0; i < Z80.mem.length; i++){
-			Z80.mem[i] = 0;
-		}
+		Z80.reg = {
+			a: new Uint8ClampedArray(2),
+			f: new Uint8ClampedArray(2),
+			b: new Uint8ClampedArray(2),
+			c: new Uint8ClampedArray(2),
+			d: new Uint8ClampedArray(2),
+			e: new Uint8ClampedArray(2),
+			h: new Uint8ClampedArray(2),
+			l: new Uint8ClampedArray(2),
+
+			i: 0,
+			r: 0,
+			m: 0,
+			t: 0,
+			ix: 0,
+			iy: 0,
+			sp: 0, //16bit
+			pc: 0 //16bit
+		};
+		Z80.mem = new Uint8ClampedArray(65535);
 		if(debug){$(document).trigger('op', {name:'',type:'ready'});}
 	}
 };

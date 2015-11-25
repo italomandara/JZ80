@@ -14,19 +14,18 @@ var debgr = function(obj){
 			$('#regs').append(['<div class="', Z80.reg[key] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '</div>'].join(''));
 		}
 	}
-		$('#last-op').html('');
+		
 		$('#mem').html('');
 		for (i=offset; i<Z80.mem.length/page_elements+offset; i++){
 			$('#mem').append([
-				'<div class="small-6 medium-4 large-2 column '
+				'<div class="small-6 medium-3 large-2 column '
 				, Z80.mem[i] ? css_class : ''
-				,'">'
+				,'"><div class="input-group"><span class="input-group-label">'
 				, hex(i,16)
-				,' : <span id="'
+				,': </span><input class="input-group-field" type="text" id="'
 				, i 
-				,'">'
-				, hex(Z80.mem[i])
-				, '</span></div>'
+				,'" value="',hex(Z80.mem[i]),'"">'
+				, '<a class="input-group-button button js-write-mem">></a></div></div>'
 				].join(''));
 		}
 	return obj.offset;		
@@ -102,7 +101,7 @@ $(function(){
 
 				'</div>',				
 			'</div>',
-			'<div class="reveal" id="oplist" data-reveal data-animation-in="fade-in" data-animation-out="fade-out">',
+			'<div class="reveal" id="oplist" data-reveal >',
 			'</div>'
 			].join(''));
 		paginate(0);
@@ -164,6 +163,7 @@ $(function(){
 				$('[data-page="' + offset + '"]').addClass('current');
 			})
 			.on('click touchstart', '.js-exec' , function(e){
+				$('#last-op').html('');
 				e.preventDefault();
 				var op = $('#op').val().match(/.{1,2}/g);
 				for(var i=0; i<op.length; i++){
@@ -172,6 +172,7 @@ $(function(){
 				Z80.fetch();
 				debgr({name:'', type:'ready', offset: 0 });
 			}).on('click touchstart', '.js-reset' , function(e){
+				$('#last-op').html('');
 				e.preventDefault();
 				Z80.reset();
 				debgr({name:'', type:'ready', offset: 0 });
@@ -188,6 +189,13 @@ $(function(){
 			}).on('change','.js-paginate-by', function(){
 				paginate_by = $(this).val();
 				paginate(debgr({name:'', type:'ready', offset: offset }));
+			}).on('click touchstart', '.js-write-mem' , function(e){
+				var $parent = $(this).parent()
+				var addr = $parent.find('input').attr('id'),
+					mem = $parent.find('input').val();
+				e.preventDefault();
+				Z80.mem[addr] = mem;
+				debgr({name:'', type:'ready', offset: 0 });
 			});
 	}
 });
