@@ -66,8 +66,10 @@ color: #bada55;
 	border-right: 1px solid red;
 	font-family: "Lucida Console", Monaco, monospace;
 }
-#mem .input-group{
-	margin-bottom: 0;
+#mem, #regs{
+	.input-group{
+		margin-bottom: 0;
+	}
 }
 #mem > div,
 #regs > div,
@@ -75,11 +77,16 @@ color: #bada55;
 #input{
 	padding: 2px 5px;
 }
-#mem > div{
+/* #mem > div{
 	border-right: 1px solid #070;
 	border-bottom: 1px solid #070;
 }
 #regs > div,
 #last-op {
 	border-bottom: 1px dotted black;
+} */
+.op:hover{
+	text-decoration: undelined;
+	color: $primary-color;
+	cursor: pointer;
 }

@@ -7,12 +7,7 @@ var debgr = function(obj){
 	$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
 	$('#regs').html('');
 	for(key in Z80.reg){
-		if(key==='a'||key==='b'||key==='c'||key==='d'||key==='e'||key==='f'||key==='h'||key==='l'){
-			$('#regs').append(['<div class="', Z80.reg[key][0] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key][0]) , '</div>',
-								'<div class="', Z80.reg[key][1] ? css_class : '' ,'">', key , '`: ' , binary(Z80.reg[key][1]) , '</div>'].join(''));
-		} else {
-			$('#regs').append(['<div class="', Z80.reg[key] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '</div>'].join(''));
-		}
+		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '"><a class="input-group-button button js-write-reg">></a></div>'].join(''));
 	}
 		
 		$('#mem').html('');
@@ -120,7 +115,7 @@ $(function(){
 		];
 		for (op in Z80.op){
 			oplist.push([
-				'<tr><td>',hex(parseInt(op,10)),'</td><td>',ops_table[op].name,'</td><td>',ops_table[op].description,'</td></tr>'
+				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op ,'"><td>',hex(parseInt(op,10)),'</td><td>',ops_table[op].name,'</td><td>',ops_table[op].description,'</td></tr>'
 				].join(''));
 		}
 		oplist.push([
@@ -190,11 +185,23 @@ $(function(){
 				paginate_by = $(this).val();
 				paginate(debgr({name:'', type:'ready', offset: offset }));
 			}).on('click touchstart', '.js-write-mem' , function(e){
-				var $parent = $(this).parent()
-				var addr = $parent.find('input').attr('id'),
-					mem = $parent.find('input').val();
 				e.preventDefault();
+				var $parent = $(this).parent(),
+					addr = $parent.find('input').attr('id'),
+				mem = parseInt($parent.find('input').val(),16);
 				Z80.mem[addr] = mem;
+				debgr({name:'', type:'ready', offset: 0 });
+			}).on('click touchstart', '.js-write-reg' , function(e){
+				e.preventDefault();
+				var $this = $(this).parent().find('input'),
+					reg = $this.attr('data-reg');
+				Z80.reg[reg] = parseInt($this.val(),2);
+				debgr({name:'', type:'ready', offset: 0 });
+			})
+			.on('click touchstart', '.js-exec-op' , function(e){
+				e.preventDefault();
+				var op= parseInt($(this).attr('data-op'),10);
+				Z80.op[op]();
 				debgr({name:'', type:'ready', offset: 0 });
 			});
 	}

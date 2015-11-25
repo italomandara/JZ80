@@ -3693,7 +3693,7 @@ table.hover tr:nth-of-type(even):hover {
   border-right: 1px solid red;
   font-family: "Lucida Console", Monaco, monospace; }
 
-#mem .input-group {
+#mem .input-group, #regs .input-group {
   margin-bottom: 0; }
 
 #mem > div,
@@ -3702,10 +3702,15 @@ table.hover tr:nth-of-type(even):hover {
 #input {
   padding: 2px 5px; }
 
-#mem > div {
-  border-right: 1px solid #070;
-  border-bottom: 1px solid #070; }
-
+/* #mem > div{
+	border-right: 1px solid #070;
+	border-bottom: 1px solid #070;
+}
 #regs > div,
 #last-op {
-  border-bottom: 1px dotted black; }
+	border-bottom: 1px dotted black;
+} */
+.op:hover {
+  text-decoration: undelined;
+  color: #bada55;
+  cursor: pointer; }
