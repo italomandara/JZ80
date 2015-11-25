@@ -7,7 +7,12 @@ var debgr = function(obj){
 	$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
 	$('#regs').html('');
 	for(key in Z80.reg){
-		$('#regs').append(['<div class="', Z80.reg[key] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '</div>'].join(''));
+		if(key==='a'||key==='b'||key==='c'||key==='d'||key==='e'||key==='f'||key==='h'||key==='l'){
+			$('#regs').append(['<div class="', Z80.reg[key][0] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key][0]) , '</div>',
+								'<div class="', Z80.reg[key][1] ? css_class : '' ,'">', key , '`: ' , binary(Z80.reg[key][1]) , '</div>'].join(''));
+		} else {
+			$('#regs').append(['<div class="', Z80.reg[key] ? css_class : '' ,'">', key , ': ' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '</div>'].join(''));
+		}
 	}
 		$('#last-op').html('');
 		$('#mem').html('');
