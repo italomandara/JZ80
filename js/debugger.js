@@ -7,7 +7,7 @@ var debgr = function(obj){
 	$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
 	$('#regs').html('');
 	for(key in Z80.reg){
-		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '"><a class="input-group-button button js-write-reg">></a></div>'].join(''));
+		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '"><a class="input-group-button button js-write-reg"></a></div>'].join(''));
 	}
 		
 		$('#mem').html('');
@@ -20,7 +20,7 @@ var debgr = function(obj){
 				,': </span><input class="input-group-field" type="text" id="'
 				, i 
 				,'" value="',hex(Z80.mem[i]),'"">'
-				, '<a class="input-group-button button js-write-mem">></a></div></div>'
+				, '<a class="input-group-button button js-write-mem"></a></div></div>'
 				].join(''));
 		}
 	return obj.offset;		
@@ -76,7 +76,7 @@ $(function(){
 							'<a href="javascript:void(0);">CPU</a>',
 							'<ul class="submenu menu vertical" data-submenu>',
 								'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
-								'<li><a href="javascript:void(0);" data-open="oplist" >Scan Opcodes</a></li>',
+								'<li><a href="javascript:void(0);" data-open="oplist" >Available Instruction Set</a></li>',
 							'</ul>',
 						'</li>',
 						'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
@@ -89,9 +89,8 @@ $(function(){
 				'<div class="medium-6 large-7 column" ><div id="mem" class="row"></div></div>',
 				'<div id="regs" class="medium-3 large-2 column" ></div>',
 				'<div id="input" class="medium-3 large-3 column">',
-					'<label>op</label>',
 					'<textarea id="op"></textarea>',
-					'<button class="button js-exec">Execute</button>',
+					'<button class="expanded button js-exec">Execute</button>',
 					'<p id="last-op"></p>',
 
 				'</div>',				

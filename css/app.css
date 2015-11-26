@@ -3690,7 +3690,6 @@ table.hover tr:nth-of-type(even):hover {
   font-size: 0.8rem; }
 
 #regs, #last-op {
-  border-right: 1px solid red;
   font-family: "Lucida Console", Monaco, monospace; }
 
 #mem .input-group, #regs .input-group {
