@@ -163,7 +163,7 @@ $(function(){
 				for(var i=0; i<op.length; i++){
 					Z80.mmu.wb(i,parseInt(op[i],16));
 				}
-				Z80.fetch();
+				Z80.start();
 				debgr({name:'', type:'ready', offset: 0 });
 			}).on('click touchstart', '.js-reset' , function(e){
 				$('#last-op').html('');

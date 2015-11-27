@@ -1,13 +1,13 @@
 var Z80 = {
 	utils: {
 		dBy2W: function(arr) {
-			return (arr[0] * 256) + arr[1];
+			return (arr[0] << 8) | arr[1];
 		},
 		split8: function(data) {
-			return data.toString(16).match(/.{1,2}/g);
+			return [data >> 8,data & 0xff];
 		},
 		setBit: function(pos, num, set) {
-			return set ? Math.pow(2, pos) | num : ~Math.pow(2, pos) & num;
+			return set ? (1 << pos) | num : ~(1 << pos) & num;
 		},
 		rdBit: function(pos, num) {
 			var mask = 1 << pos;
@@ -1179,33 +1179,19 @@ var Z80 = {
 			return name;
 		},
 	},
-	IR: {
-		f: [],
-		exec: function(name) {
-			if (typeof this.f[0] === 'function') {
-				var name = this.f[0]();
-				if (name) {
-					if (debug) {
-						$(document).trigger('op', {
-							name: name
-						});
-					}
-					this.f.shift();
-					Z80.fetch();
-				} else {
-					return
-				}
-			}
-		},
-	},
+
+	halt: false,
+
 	fetch: function() {
-		Z80.IR.f.push(Z80.op[Z80.mmu.rb(Z80.reg.pc)]);
+		if(this.op[this.mmu.rb(this.reg.pc)]() && !this.halt){
+			this.fetch();
+		}
 	},
-	clk: setInterval(function() {
-		Z80.IR.exec();
-	}, 1000),
+	start: function() {
+		this.fetch();
+	},
+	clk: function(){},
 	reset: function() {
-		Z80.IR.f = [];
 		for (key in this.reg) {
 			this.reg[key] = 0;
 		}

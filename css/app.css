@@ -1165,12 +1165,12 @@ h6 {
     font-size: 1.33333rem; } }
 
 a {
-  color: #bada55;
+  color: #445577;
   text-decoration: none;
   line-height: inherit;
   cursor: pointer; }
   a:hover, a:focus {
-    color: #acd232; }
+    color: #3a4966; }
   a img {
     border: 0; }
 
@@ -1381,12 +1381,12 @@ kbd {
   padding: 0.85em 1em;
   margin: 0 1rem 1rem 0;
   font-size: 0.9rem;
-  background: #bada55;
+  background: #445577;
   color: #fff; }
   [data-whatinput="mouse"] .button {
     outline: 0; }
   .button:hover, .button:focus {
-    background: #abd230;
+    background: #3a4865;
     color: #fff; }
   .button.tiny {
     font-size: 0.6rem; }
@@ -1400,10 +1400,10 @@ kbd {
     margin-left: 0;
     margin-right: 0; }
   .button.primary {
-    background: #bada55;
+    background: #445577;
     color: #fff; }
     .button.primary:hover, .button.primary:focus {
-      background: #a2c72b;
+      background: #36445f;
       color: #fff; }
   .button.secondary {
     background: #777;
@@ -1430,19 +1430,19 @@ kbd {
       background: #cc8b00;
       color: #fff; }
   .button.hollow {
-    border: 1px solid #bada55;
-    color: #bada55; }
+    border: 1px solid #445577;
+    color: #445577; }
     .button.hollow, .button.hollow:hover, .button.hollow:focus {
       background: transparent; }
     .button.hollow:hover, .button.hollow:focus {
-      border-color: #657c1b;
-      color: #657c1b; }
+      border-color: #222b3c;
+      color: #222b3c; }
     .button.hollow.primary {
-      border: 1px solid #bada55;
-      color: #bada55; }
+      border: 1px solid #445577;
+      color: #445577; }
       .button.hollow.primary:hover, .button.hollow.primary:focus {
-        border-color: #657c1b;
-        color: #657c1b; }
+        border-color: #222b3c;
+        color: #222b3c; }
     .button.hollow.secondary {
       border: 1px solid #777;
       color: #777; }
@@ -1781,7 +1781,7 @@ select {
   padding: 1.25rem 1rem;
   line-height: 1;
   font-size: 1rem;
-  color: #bada55;
+  color: #445577;
   position: relative;
   border-bottom: 1px solid #e6e6e6; }
   .accordion-title:hover, .accordion-title:focus {
@@ -1809,7 +1809,7 @@ select {
   font-size: 0.6rem;
   text-align: center;
   border-radius: 50%;
-  background: #bada55;
+  background: #445577;
   color: #fefefe; }
   .badge.secondary {
     background: #777;
@@ -1846,7 +1846,7 @@ select {
       top: 1px;
       opacity: 1; }
   .breadcrumbs a {
-    color: #bada55; }
+    color: #445577; }
     .breadcrumbs a:hover {
       text-decoration: underline; }
   .breadcrumbs .disabled {
@@ -1888,10 +1888,10 @@ select {
   .button-group.expanded .button:nth-last-child(6):first-child ~ .button {
     width: 16.66667%; }
   .button-group.primary .button {
-    background: #bada55;
+    background: #445577;
     color: #fff; }
     .button-group.primary .button:hover, .button-group.primary .button:focus {
-      background: #a2c72b;
+      background: #36445f;
       color: #fff; }
   .button-group.secondary .button {
     background: #777;
@@ -1938,11 +1938,11 @@ select {
   .callout > :last-child {
     margin-bottom: 0; }
   .callout.primary {
-    background-color: #f5f9e6; }
+    background-color: #e0e5ed; }
     .callout.primary a {
-      color: #8dae26; }
+      color: #303c53; }
       .callout.primary a:hover {
-        color: #5a6f18; }
+        color: #141923; }
   .callout.secondary {
     background-color: #ebebeb; }
   .callout.success {
@@ -2020,7 +2020,7 @@ select {
     width: 0;
     height: 0;
     border: inset 6px;
-    border-color: transparent transparent transparent #bada55;
+    border-color: transparent transparent transparent #445577;
     border-left-style: solid;
     position: absolute;
     top: 50%;
@@ -2033,7 +2033,7 @@ select {
   width: 0;
   height: 0;
   border: inset 6px;
-  border-color: transparent #bada55 transparent transparent;
+  border-color: transparent #445577 transparent transparent;
   border-right-style: solid;
   float: left;
   margin-right: 0.75rem;
@@ -2077,7 +2077,7 @@ select {
     width: 0;
     height: 0;
     border: inset 5px;
-    border-color: #bada55 transparent transparent;
+    border-color: #445577 transparent transparent;
     border-top-style: solid;
     position: absolute;
     top: 12px;
@@ -2088,7 +2088,7 @@ select {
     width: 0;
     height: 0;
     border: inset 5px;
-    border-color: transparent #bada55 transparent transparent;
+    border-color: transparent #445577 transparent transparent;
     border-right-style: solid;
     float: left;
     margin-left: 0;
@@ -2099,7 +2099,7 @@ select {
     width: 0;
     height: 0;
     border: inset 5px;
-    border-color: transparent transparent transparent #bada55;
+    border-color: transparent transparent transparent #445577;
     border-left-style: solid; }
   .dropdown.menu .has-submenu.is-left-arrow.opens-inner .submenu {
     right: 0;
@@ -2174,7 +2174,7 @@ select {
   white-space: nowrap;
   cursor: default;
   border-radius: 2px;
-  background: #bada55;
+  background: #445577;
   color: #fefefe; }
   .label.secondary {
     background: #777;
@@ -2495,7 +2495,7 @@ body {
     margin-left: 0.75rem; }
   .pagination .current {
     padding: 0.25rem 0.83333rem;
-    background: #bada55;
+    background: #445577;
     color: #fefefe;
     cursor: default; }
   .pagination .disabled {
@@ -2515,7 +2515,7 @@ body {
   margin-bottom: 1rem;
   border-radius: 2px; }
   .progress.primary .progress-meter {
-    background-color: #bada55; }
+    background-color: #445577; }
   .progress.secondary .progress-meter {
     background-color: #777; }
   .progress.success .progress-meter {
@@ -2530,7 +2530,7 @@ body {
   display: block;
   width: 0%;
   height: 100%;
-  background-color: #bada55;
+  background-color: #445577;
   border-radius: 2px; }
   .progress-meter .progress-meter-text {
     position: absolute;
@@ -2583,7 +2583,7 @@ body {
   display: inline-block;
   width: 1.4rem;
   height: 1.4rem;
-  background-color: #bada55;
+  background-color: #445577;
   transition: all 0.2s ease-in-out;
   -ms-touch-action: manipulation;
       touch-action: manipulation;
@@ -2591,7 +2591,7 @@ body {
   [data-whatinput="mouse"] .slider-handle {
     outline: 0; }
   .slider-handle:hover {
-    background-color: #abd230; }
+    background-color: #3a4865; }
   .slider-handle.is-dragging {
     transition: all 0s linear; }
 
@@ -2752,7 +2752,7 @@ body {
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
   input:checked ~ .switch-paddle {
-    background: #bada55; }
+    background: #445577; }
     input:checked ~ .switch-paddle::after {
       left: 2.25rem; }
   [data-whatinput="mouse"] input:focus ~ .switch-paddle {
@@ -2885,11 +2885,11 @@ table.hover tr:nth-of-type(even):hover {
     float: none;
     display: block; }
   .tabs.primary {
-    background: #bada55; }
+    background: #445577; }
     .tabs.primary > li > a {
       color: #fefefe; }
       .tabs.primary > li > a:hover, .tabs.primary > li > a:focus {
-        background: #b5d749; }
+        background: #4a5c81; }
 
 .tabs-title {
   float: left; }
@@ -2898,7 +2898,7 @@ table.hover tr:nth-of-type(even):hover {
     padding: 1.25rem 1.5rem;
     line-height: 1;
     font-size: 12px;
-    color: #bada55; }
+    color: #445577; }
     .tabs-title > a:hover, .tabs-title > a:focus, .tabs-title > a[aria-selected="true"] {
       background: #e6e6e6; }
 
@@ -2927,7 +2927,7 @@ table.hover tr:nth-of-type(even):hover {
   border-radius: 2px;
   margin-bottom: 1rem; }
   .thumbnail:hover, .thumbnail:focus {
-    box-shadow: 0 0 6px 1px rgba(186, 218, 85, 0.5); }
+    box-shadow: 0 0 6px 1px rgba(68, 85, 119, 0.5); }
 
 .title-bar {
   background: #0a0a0a;
@@ -3680,10 +3680,10 @@ table.hover tr:nth-of-type(even):hover {
 #input textarea {
   min-height: 422px;
   background: #000;
-  color: #bada55; }
+  color: #445577; }
 
 .notempty {
-  background: #bada55; }
+  background: #445577; }
   .notempty .input-group-label,
   .notempty .input-group-field,
   .notempty .input-group-button {
@@ -3709,15 +3709,7 @@ table.hover tr:nth-of-type(even):hover {
 #input {
   padding: 1px; }
 
-/* #mem > div{
-	border-right: 1px solid #070;
-	border-bottom: 1px solid #070;
-}
-#regs > div,
-#last-op {
-	border-bottom: 1px dotted black;
-} */
 .op:hover {
   text-decoration: undelined;
-  color: #bada55;
+  color: #445577;
   cursor: pointer; }
