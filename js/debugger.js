@@ -7,7 +7,7 @@ var debgr = function(obj){
 	$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
 	$('#regs').html('');
 	for(key in Z80.reg){
-		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc') ? 16 : 8) , '"><a class="input-group-button button js-write-reg"></a></div>'].join(''));
+		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc'||key==='ix'||key==='iy') ? 16 : 8) , '"><a class="input-group-button button js-write-reg"></a></div>'].join(''));
 	}
 		
 		$('#mem').html('');
@@ -80,15 +80,15 @@ $(function(){
 							'</ul>',
 						'</li>',
 						'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
-						'<li><a data-open="oplist" href="javascript:void(0);">Scan opcodes</a></li>',
+						'<li><a data-open="oplist" href="javascript:void(0);">Available Instructions Set</a></li>',
 					'</ul>',
 				'</div>',
 			'</div>',
 			'<div class="row mt40"><div class="hide float-left"><label>Paginate by<input class="js-paginate-by" type="number" value="' , paginate_by , '"></label></div><div class="float-left"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div></div>',
 			'<div class="row">',
-				'<div class="medium-6 large-7 column" ><div id="mem" class="row"></div></div>',
+				'<div class="medium-7 large-8 column" ><div id="mem" class="row"></div></div>',
 				'<div id="regs" class="medium-3 large-2 column" ></div>',
-				'<div id="input" class="medium-3 large-3 column">',
+				'<div id="input" class="medium-2 large-2 column">',
 					'<textarea id="op"></textarea>',
 					'<button class="expanded button js-exec">Execute</button>',
 					'<p id="last-op"></p>',

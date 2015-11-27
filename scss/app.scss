@@ -57,13 +57,23 @@ color: #bada55;
 
 .notempty{
 	background: #bada55;
+	.input-group-label,
+	.input-group-field,
+	.input-group-button{
+		background:transparent;
+		color: $white;
+		border: none;
+	}
+	.input-group-button{
+		background: $secondary-color;
+	}
+
 }
 #mem,#regs, #mem input{
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 0.8rem;
 }
 #regs, #last-op{
-
 	font-family: "Lucida Console", Monaco, monospace;
 }
 #mem, #regs{
@@ -75,7 +85,7 @@ color: #bada55;
 #regs > div,
 #last-op,
 #input{
-	padding: 2px 5px;
+	padding: 1px;
 }
 /* #mem > div{
 	border-right: 1px solid #070;
