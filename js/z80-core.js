@@ -41,7 +41,7 @@ var Z80 = {
 			Z80.reg[reg_name1] = data[0];
 			Z80.reg[reg_name2] = data[1];
 		},
-		ld$rrtom: function(reg1, reg2) {
+		ld$nntorr: function(reg1, reg2) {
 			var addr = Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1));
 			Z80.mmu.ww(addr, [Z80.reg[reg1], Z80.reg[reg2]]);
 		},
@@ -97,7 +97,7 @@ var Z80 = {
 		},
 		inc: function(n,double){
 			if (arguments.length<2){
-					Z80.clock.m = 4;
+					Z80.clock.m = 11;
 				if (n === 0xFF) {
 					Z80.utils.flag_C(true);
 					n = 0;
@@ -110,6 +110,7 @@ var Z80 = {
 				Z80.reg.pc += 1;
 				return n
 			} else {
+				Z80.clock.m = 6;
 				return n++;
 			}			
 		},
@@ -136,11 +137,11 @@ var Z80 = {
 			return 0x02;
 		},
 		0x03: function() { // INC BC
-			incrr('b','c');
+			Z80.core.incrr('b','c');
 			return 0x03;
 		},
 		0x04: function() { // INC B
-			incr('b');
+			Z80.core.incr('b');
 			return 0x04;
 		},
 		// 0x05: function(){//nop
@@ -181,7 +182,7 @@ var Z80 = {
 		//	return 0x0b;
 		// },
 		0x0c: function(){ // INC c
-			incr('c');	
+			Z80.core.incr('c');	
 			return 0x0c;
 		},
 		// 0x0d: function(){//nop
@@ -218,11 +219,11 @@ var Z80 = {
 			return 0x12;
 		},
 		0x13: function() { // INC de
-			incrr('d','e');
+			Z80.core.incrr('d','e');
 			return 0x13;
 		},
 		0x14: function(){ // INC d
-			incr('d');	
+			Z80.core.incr('d');	
 			return 0x14;
 		},
 		// 0x15: function(){//nop
@@ -263,7 +264,7 @@ var Z80 = {
 		//	return 0x1b;
 		// },
 		0x1c: function(){ // INC e
-			incr('e');
+			Z80.core.incr('e');
 			return 0x1c;
 		},
 		// 0x1d: function(){//nop
@@ -294,16 +295,17 @@ var Z80 = {
 			return 0x21;
 		},
 		0x22: function() { // LD (**) HL
-			Z80.reg.pc += 3;Z80.core.ld$rrtom('h', 'l');
+			Z80.core.ld$nntorr('h', 'l');
+			Z80.reg.pc += 3;
 			Z80.clock.m = 16;
 			return 0x22;
 		},
 		0x23: function(){ // INC de
-			incrr('d','e'); 	
+			Z80.core.incrr('d','e'); 	
 			return 0x23;
 		},
 		0x24: function(){ // INC h
-			incr('h');	
+			Z80.core.incr('h');	
 			return 0x24;
 		},
 		// 0x25: function(){//nop
@@ -344,7 +346,7 @@ var Z80 = {
 		//	return 0x2b;
 		// },
 		0x2c: function(){ // INC l
-			incr('l');	
+			Z80.core.incr('l');	
 			return 0x2c;
 		},
 		// 0x2d: function(){//nop
@@ -381,11 +383,11 @@ var Z80 = {
 			return 0x32;
 		},
 		0x33: function(){//inc sp
-			Z80.reg.sp = inc(Z80.reg.sp,16);
+			Z80.reg.sp = Z80.core.inc(Z80.reg.sp,16);
 			return 0x33;
 		},
 		0x34: function(){//inc (hl)
-			Z80.mem[dBy2W([Z80.reg.h,Z80.reg.l])] = inc(Z80.mem[dBy2W([Z80.reg.h,Z80.reg.l])]);
+			Z80.mem[dBy2W([Z80.reg.h,Z80.reg.l])] = Z80.core.inc(Z80.mem[dBy2W([Z80.reg.h,Z80.reg.l])]);
 			return 0x34;
 		},
 		// 0x35: function(){//nop

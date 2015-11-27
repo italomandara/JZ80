@@ -183,7 +183,7 @@ $(function() {
 				$('#last-op').html('');
 				e.preventDefault();
 				if ($('#op').val() !== '') {
-					Z80.reset();
+					Z80.reg.pc = 0;
 					var op = $('#op').val().match(/.{1,2}/g);
 					for (var i = 0; i < op.length; i++) {
 						Z80.mmu.wb(i, parseInt(op[i], 16));
