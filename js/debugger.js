@@ -1,29 +1,35 @@
 var debug=true,
 offset=0,
-paginate_by=256;
+paginate_by=92,
 page_elements = Z80.mem.length/paginate_by;
 var debgr = function(obj){
-	var css_class='notempty';
-	$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
-	$('#regs').html('');
-	for(key in Z80.reg){
-		$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc'||key==='ix'||key==='iy') ? 16 : 8) , '"><a class="input-group-button button js-write-reg"></a></div>'].join(''));
-	}
-		
-		$('#mem').html('');
-		for (i=offset; i<Z80.mem.length/page_elements+offset; i++){
-			$('#mem').append([
-				'<div class="small-6 medium-3 large-2 column '
-				, Z80.mem[i] ? css_class : ''
-				,'"><div class="input-group"><span class="input-group-label">'
-				, hex(i,16)
-				,': </span><input class="input-group-field" type="text" id="'
-				, i 
-				,'" value="',hex(Z80.mem[i]),'"">'
-				, '<a class="input-group-button button js-write-mem"></a></div></div>'
-				].join(''));
+	var errorModal = new Foundation.Reveal($('#error'));
+	if (obj.type==='error'){
+		$('#error-type').text(obj.name);
+		errorModal.open();
+	} else {
+		var css_class='notempty';
+		$('#last-op').append(obj.name ? ops_table[obj.name].name+' - ':'');
+		$('#regs').html('');
+		for(key in Z80.reg){
+			$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '' ,'"><span class="input-group-label">', key , ':</span><input class="input-group-field" type="text" data-reg="',key,'" value="' , binary(Z80.reg[key], (key==='sp'||key==='pc'||key==='ix'||key==='iy') ? 16 : 8) , '"><a class="input-group-button button js-write-reg"></a></div>'].join(''));
 		}
-	return obj.offset;		
+			
+			$('#mem').html('');
+			for (i=offset; i<Z80.mem.length/page_elements+offset; i++){
+				$('#mem').append([
+					'<div class="small-6 medium-3 large-2 column '
+					, Z80.mem[i] ? css_class : ''
+					,'"><div class="input-group"><span class="input-group-label">'
+					, hex(i,16)
+					,': </span><input class="input-group-field" type="text" id="'
+					, i 
+					,'" value="',hex(Z80.mem[i]),'"">'
+					, '<a class="input-group-button button js-write-mem"></a></div></div>'
+					].join(''));
+			}
+		return obj.offset;
+	}	
 }
 var paginate = function(offset){
 	var current_page = Math.floor(offset/paginate_by),
@@ -95,8 +101,10 @@ $(function(){
 
 				'</div>',				
 			'</div>',
-			'<div class="reveal" id="oplist" data-reveal >',
-			'</div>'
+			'<div class="reveal" id="oplist" data-reveal ></div>',
+			'<div class="tiny reveal" id="error" data-reveal >',
+			'<p class="lead">Error:</p><p id="error-type"></p>',
+			'<button class="close-button" data-close aria-label="Close reveal" type="button"></button></div>'
 			].join(''));
 		paginate(0);
 		var oplist = [
@@ -159,12 +167,14 @@ $(function(){
 			.on('click touchstart', '.js-exec' , function(e){
 				$('#last-op').html('');
 				e.preventDefault();
-				var op = $('#op').val().match(/.{1,2}/g);
-				for(var i=0; i<op.length; i++){
-					Z80.mmu.wb(i,parseInt(op[i],16));
+				if ($('#op').val() !== ''){
+					var op = $('#op').val().match(/.{1,2}/g);
+					for(var i=0; i<op.length; i++){
+						Z80.mmu.wb(i,parseInt(op[i],16));
+					}
 				}
+
 				Z80.start();
-				debgr({name:'', type:'ready', offset: 0 });
 			}).on('click touchstart', '.js-reset' , function(e){
 				$('#last-op').html('');
 				e.preventDefault();
