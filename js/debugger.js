@@ -1,11 +1,12 @@
 var debug = true,
 	offset = 0,
+	errorModal,
 	paginate_by = 92,
 	page_elements = Z80.mem.length / paginate_by,
 	updateMem = function(el) {
 		var $this = $(el),
 			addr = $this.attr('id'),
-			mem = parseInt($this.val(), 16);
+			mem = parseInt($this.val()? $this.val() : 0, 16);
 		Z80.mem[addr] = mem;
 		debgr({
 			name: '',
@@ -16,7 +17,7 @@ var debug = true,
 	updateReg = function(el) {
 		var $this = $(el),
 			reg = $this.attr('data-reg');
-		Z80.reg[reg] = parseInt($this.val(), 2);
+		Z80.reg[reg] = parseInt($this.val()? $this.val() : 0 , 2);
 		debgr({
 			name: '',
 			type: 'ready',
@@ -24,7 +25,6 @@ var debug = true,
 		});
 	};
 var debgr = function(obj) {
-	var errorModal = new Foundation.Reveal($('#error'));
 	if (obj.type === 'error') {
 		$('#error-type').text(obj.name);
 		errorModal.open();
@@ -32,6 +32,8 @@ var debgr = function(obj) {
 		var css_class = 'notempty';
 		$('#last-op').append(obj.name ? ops_table[obj.name].name + ' - ' : '');
 		$('#regs').html('');
+		$('#clock-t').text(Z80.clock.t);
+		$('#clock-m').text(Z80.clock.m);
 		for (key in Z80.reg) {
 			$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '', '"><span class="input-group-label">', key, ':</span><input class="input-group-field js-write-reg" type="text" data-reg="', key, '" placeholder="', binary(Z80.reg[key], (key === 'sp' || key === 'pc' || key === 'ix' || key === 'iy') ? 16 : 8), '"></div>'].join(''));
 		}
@@ -83,8 +85,7 @@ $(function() {
 			'<li class="has-submenu">',
 			'<a href="javascript:void(0);">CPU</a>',
 			'<ul class="submenu menu vertical" data-submenu>',
-			'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
-			'<li><a href="javascript:void(0);" data-open="oplist" >Available Instruction Set</a></li>',
+			'<li><a href="javascript:void(0);">Clock: total <span id="clock-t"></span></a></li><li><a href="javascript:void(0);">Clock: last <span id="clock-m"></span></a></li>',
 			'</ul>',
 			'</li>',
 			'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
@@ -182,6 +183,7 @@ $(function() {
 				$('#last-op').html('');
 				e.preventDefault();
 				if ($('#op').val() !== '') {
+					Z80.reset();
 					var op = $('#op').val().match(/.{1,2}/g);
 					for (var i = 0; i < op.length; i++) {
 						Z80.mmu.wb(i, parseInt(op[i], 16));
@@ -223,12 +225,10 @@ $(function() {
 				e.preventDefault();
 					updateMem(this);
 			}).on('keyup', '.js-write-mem', function(e) {
-				e.preventDefault();
 				if (Foundation.Keyboard.parseKey(event) === 'ENTER') {
 					updateMem(this);
 				}
 			}).on('focusout', '.js-write-reg', function(e) {
-				e.preventDefault();
 					updateReg(this);
 			}).on('keyup', '.js-write-reg', function(e) {
 				e.preventDefault();
@@ -245,5 +245,7 @@ $(function() {
 					offset: 0
 				});
 			});
+		errorModal = new Foundation.Reveal($('#error'));
 	}
+
 });
