@@ -22,7 +22,7 @@ var Z80 = {
 		flag_H: function(state) {
 			Z80.reg.f = Z80.utils.setBit(4, Z80.reg.f, state);
 		},
-		flag_PV: function(state) {
+		flag_V: function(state) {
 			Z80.reg.f = Z80.utils.setBit(2, Z80.reg.f, state);
 		},
 		flag_N: function(state) {
@@ -95,10 +95,23 @@ var Z80 = {
 			Z80.reg[reg]++;
 			Z80.reg.pc += 1;
 		},
+		decr: function(reg){
+			Z80.clock.m = 4;
+			if (Z80.reg[reg] === 0xFF) {
+				Z80.utils.flag_C(true);
+				Z80.reg[reg] = 0;
+				return 0x04;
+			}
+			if (Z80.reg[reg] >= 0x0F) {
+				Z80.utils.flag_H(true);
+			}
+			Z80.reg[reg]++;
+			Z80.reg.pc += 1;
+		},
 		inc: function(n,double){
 			if (arguments.length<2){
 					Z80.clock.m = 11;
-				if (n === 0xFF) {
+				if (n === 0x80) {
 					Z80.utils.flag_C(true);
 					n = 0;
 					return 0x04;
@@ -114,6 +127,21 @@ var Z80 = {
 				return n++;
 			}			
 		},
+		swp: function(arr){
+			for(var i=0; i < arr.length; i++){
+				Z80.reg[arr[i]] = Z80.reg[arr[i]] ^ Z80.reg[[arr[i],'1'].join('')], Z80.reg[[arr[i],'1'].join('')] = Z80.reg[arr[i]] ^ Z80.reg[[arr[i],'1'].join('')], Z80.reg[arr[i]] = Z80.reg[arr[i]] ^ Z80.reg[[arr[i],'1'].join('')];
+			}
+		},
+		and: function(data){
+			Z80.reg.a = Z80.reg.a & data,
+			Z80.utils.flag_V(!Z80.utils.rdBit(0,Z80.reg.a) && Z80.reg.a);
+			Z80.utils.flag_Z(!Z80.reg.a);
+		},
+		or: function(data){
+			Z80.reg.a = Z80.reg.a | data,
+			Z80.utils.flag_V(!Z80.utils.rdBit(0,Z80.reg.a) && Z80.reg.a);
+			Z80.utils.flag_Z(!Z80.reg.a);
+		}
 	},
 	op: {
 		0x00: function() { // nop
@@ -160,11 +188,12 @@ var Z80 = {
 		//Z80.clock.m = 4;	
 		//return 0x07;
 		// },
-		// 0x08: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0x08;
-		// },
+		0x08: function(){//ex af, af'
+			Z80.core.swp(['a','f']);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4;
+			return 0x08;
+		},
 		// 0x09: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -990,46 +1019,54 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0x9f;
 		// },
-		// 0xa0: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa0;
-		// },
-		// 0xa1: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa1;
-		// },
-		// 0xa2: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa2;
-		// },
-		// 0xa3: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa3;
-		// },
-		// 0xa4: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa4;
-		// },
-		// 0xa5: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa5;
-		// },
-		// 0xa6: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa6;
-		// },
-		// 0xa7: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa7;
-		// },
+		0xa0: function(){// and b
+			Z80.core.and(Z80.reg.b);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa0;
+		},
+		0xa1: function(){// and c
+			Z80.core.and(Z80.reg.c);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa1;
+		},
+		0xa2: function(){// and d
+			Z80.core.and(Z80.reg.d);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa2;
+		},
+		0xa3: function(){//and e
+			Z80.core.and(Z80.reg.e);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa3;
+		},
+		0xa4: function(){//and h
+			Z80.core.and(Z80.reg.h);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa4;
+		},
+		0xa5: function(){// and l
+			Z80.core.and(Z80.reg.l);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa5;
+		},
+		0xa6: function(){// and (hl)
+			Z80.core.and(Z80.mmu.rb(Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l])));
+			Z80.reg.pc += 1;
+			Z80.clock.m = 7; 	
+			return 0xa6;
+		},
+		0xa7: function(){// and a
+			Z80.core.and(Z80.reg.a);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa7;
+		},
 		// 0xa8: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1070,46 +1107,53 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xaf;
 		// },
-		// 0xb0: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb0;
-		// },
-		// 0xb1: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb1;
-		// },
-		// 0xb2: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb2;
-		// },
-		// 0xb3: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb3;
-		// },
-		// 0xb4: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb4;
-		// },
-		// 0xb5: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb5;
-		// },
-		// 0xb6: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb6;
-		// },
-		// 0xb7: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xb7;
-		// },
+		0xb0: function(){//or b
+			Z80.core.or(Z80.reg.b);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 		
+			return 0xb1;
+		},
+		0xb1: function(){//or c
+			Z80.core.or(Z80.reg.c);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb2;
+		},
+		0xb2: function(){//or d
+			Z80.core.or(Z80.reg.d);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb3;
+		},
+		0xb3: function(){//or e
+			Z80.core.or(Z80.reg.e);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb4;
+		},
+		0xb4: function(){//or h
+			Z80.core.or(Z80.reg.h);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb5;
+		},
+		0xb5: function(){//or l
+			Z80.core.or(Z80.reg.l);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb5;
+		},
+		0xb6: function(){//or (hl)
+			Z80.core.or(Z80.mmu.rb(Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l])));
+			Z80.reg.pc += 1;
+			Z80.clock.m = 7; 
+		},
+		0xb7: function(){//or 
+			Z80.core.or(Z80.reg.b);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xb7;
+		},
 		// 0xb8: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1275,11 +1319,12 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xd8;
 		// },
-		// 0xd9: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xd9;
-		// },
+		0xd9: function(){// exx
+			Z80.core.swp(['b','c','d','e','h','l']);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xd9;
+		},
 		// 0xda: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1525,6 +1570,7 @@ var Z80 = {
 	halt: false,
 
 	fetch: function() {
+		this.reg.r ++ && 0xff;
 		if(typeof this.op[this.mmu.rb(this.reg.pc)] ===  typeof undefined){
 			$(document).trigger('op', {
 				name: 'illegal or unsupported instruction',
