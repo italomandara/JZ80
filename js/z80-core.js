@@ -34,8 +34,8 @@ var Z80 = {
 	},
 	core: {
 		ldntor: function(reg_name, data) {
-			Z80.reg[reg_name] = data;
-			Z80.reg.pc += 2;
+			Z80.reg[reg_name] = $.isArray(data) ? Z80.utils.dBy2W(data) : data;
+			Z80.reg.pc += $.isArray(data) ? 3 : 2;
 		},
 		ldnntor: function(reg_name1, reg_name2, data) {
 			Z80.reg[reg_name1] = data[0];
@@ -67,10 +67,11 @@ var Z80 = {
 			Z80.mmu.wb(addr, source);
 			Z80.reg.pc++;
 		},
-		ldnto$nn: function(ptr1, ptr2, source) {
-			var addr = Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1));
+		ldnto$nn: function() {
+			var addr = Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1)),
+			source = Z80.mmu.rb(Z80.reg.pc + 3);
 			Z80.mmu.wb(addr, source);
-			Z80.reg.pc += 2;
+			Z80.reg.pc += 4;
 		},
 		ld$rrtor: function(reg_target, reg_ptr1, reg_ptr2) {
 			var addr = Z80.utils.dBy2W([Z80.reg[reg_ptr1], Z80.reg[reg_ptr2]]);
@@ -79,20 +80,20 @@ var Z80 = {
 		},
 	},
 	op: {
-		0x00: function(name) { // nop			
+		0x00: function() { // nop			
 			return false;
 		},
-		0x01: function(name) { // LD BC **
+		0x01: function() { // LD BC **
 			Z80.core.ldnntor('b', 'c', Z80.mmu.rw(Z80.reg.pc + 1));
 
 			return 0x01;
 		},
-		0x02: function(name) { // LD (BC), A
+		0x02: function() { // LD (BC), A
 			Z80.core.ldnto$rr('b', 'c', Z80.reg.a)
 
 			return 0x02;
 		},
-		0x03: function(name) { // INC BC
+		0x03: function() { // INC BC
 			Z80.reg.c++;
 			if (Z80.reg.c > 0xff) {
 				Z80.reg.b++;
@@ -107,7 +108,7 @@ var Z80 = {
 
 			return 0x03;
 		},
-		0x04: function(name) { // INC B
+		0x04: function() { // INC B
 			if (Z80.reg.b === 0xFF) {
 				Z80.reg.f = 0xFF;
 			}
@@ -116,1018 +117,1018 @@ var Z80 = {
 
 			return 0x04;
 		},
-		// 0x05: function(name){//nop
+		// 0x05: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x05;
 		// },
-		0x06: function(name) { // LD B *
+		0x06: function() { // LD B *
 			Z80.core.ldntor('b', Z80.mmu.rb(Z80.reg.pc + 1));
 			return 0x06;
 		},
-		// 0x07: function(name){//nop
+		// 0x07: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x07;
 		// },
-		// 0x08: function(name){//nop
+		// 0x08: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x08;
 		// },
-		// 0x09: function(name){//nop
+		// 0x09: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x09;
 		// },
-		0x0a: function(name) { // LD A, (BC)
+		0x0a: function() { // LD A, (BC)
 			Z80.core.ld$rrtor('a', 'b', 'c');
 
 			return 0x0a;
 		},
-		// 0x0b: function(name){//nop
+		// 0x0b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x0b;
 		// },
-		// 0x0c: function(name){//nop
+		// 0x0c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x0c;
 		// },
-		// 0x0d: function(name){//nop
+		// 0x0d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x0d;
 		// },
-		0x0e: function(name) { // LD C *
+		0x0e: function() { // LD C *
 			Z80.core.ldntor('c', Z80.mmu.rb(Z80.reg.pc + 1));
 
 			return 0x0e;
 		},
-		// 0x0f: function(name){//nop
+		// 0x0f: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x0f;
 		// },
-		// 0x10: function(name){//nop
+		// 0x10: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x10;
 		// },
-		0x11: function(name) { // LD DE **
+		0x11: function() { // LD DE **
 			Z80.core.ldnntor('d', 'e', Z80.mmu.rw(Z80.reg.pc + 1));
 
 			return 0x11;
 		},
-		0x12: function(name) { //LD (DE), A
+		0x12: function() { //LD (DE), A
 			Z80.core.ldnto$rr('d', 'e', Z80.reg.a)
 
 			return 0x12;
 		},
-		// 0x13: function(name){//nop
+		// 0x13: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x13;
 		// },
-		// 0x14: function(name){//nop
+		// 0x14: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x14;
 		// },
-		// 0x15: function(name){//nop
+		// 0x15: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x15;
 		// },
-		0x16: function(name) { //nop
+		0x16: function() { //nop
 			Z80.core.ldntor('d', Z80.mmu.rb(Z80.reg.pc + 1));
 			return 0x16;
 		},
-		// 0x17: function(name){//nop
+		// 0x17: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x17;
 		// },
-		// 0x18: function(name){//nop
+		// 0x18: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x18;
 		// },
-		// 0x19: function(name){//nop
+		// 0x19: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x19;
 		// },
-		0x1a: function(name) { //LD A, (DE)
+		0x1a: function() { //LD A, (DE)
 			Z80.core.ld$rrtor('a', 'd', 'e');
 			return 0x1a;
 		},
-		// 0x1b: function(name){//nop
+		// 0x1b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x1b;
 		// },
-		// 0x1c: function(name){//nop
+		// 0x1c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x1c;
 		// },
-		// 0x1d: function(name){//nop
+		// 0x1d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x1d;
 		// },
-		0x1e: function(name) { //LD e,*
+		0x1e: function() { //LD e,*
 			Z80.core.ldntor('e', Z80.mmu.rb(Z80.reg.pc + 1));
 			return 0x1e;
 		},
-		// 0x1f: function(name){//nop
+		// 0x1f: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x1f;
 		// },
-		// 0x20: function(name){//nop
+		// 0x20: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x20;
 		// },
-		0x21: function(name) { // LD HL **
+		0x21: function() { // LD HL **
 			Z80.core.ldnntor('h', 'l', Z80.mmu.rw(Z80.reg.pc + 1));
 
 			return 0x21;
 		},
-		0x22: function(name) { // LD (**) HL
+		0x22: function() { // LD (**) HL
 			Z80.core.ld$rrtom('h', 'l');
 			return 0x22;
 		},
-		// 0x23: function(name){//nop
+		// 0x23: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x23;
 		// },
-		// 0x24: function(name){//nop
+		// 0x24: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x24;
 		// },
-		// 0x25: function(name){//nop
+		// 0x25: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x25;
 		// },
-		0x26: function(name) { // LD H *
+		0x26: function() { // LD H *
 			Z80.core.ldntor('h', Z80.mmu.rb(Z80.reg.pc + 1));
 
 			return 0x26;
 		},
-		// 0x27: function(name){//nop
+		// 0x27: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x27;
 		// },
-		// 0x28: function(name){//nop
+		// 0x28: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x28;
 		// },
-		// 0x29: function(name){//nop
+		// 0x29: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x29;
 		// },
-		0x2a: function(name) { // ld hl (**)
+		0x2a: function() { // ld hl (**)
 			Z80.core.ld$mmtor('h', 'l');
 			return 0x2a;
 		},
-		// 0x2b: function(name){//nop
+		// 0x2b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x2b;
 		// },
-		// 0x2c: function(name){//nop
+		// 0x2c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x2c;
 		// },
-		// 0x2d: function(name){//nop
+		// 0x2d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x2d;
 		// },
-		0x2e: function(name) { // LD L *
+		0x2e: function() { // LD L *
 			Z80.core.ldntor('l', Z80.mmu.rb(Z80.reg.pc + 1));
 			return 0x2e;
 		},
-		// 0x2f: function(name){//nop
+		// 0x2f: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x2f;
 		// },
-		// 0x30: function(name){//nop
+		// 0x30: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x30;
 		// },
-		0x31: function(name) { // ld SP **
-			Z80.core.ldnntorr('sp');
+		0x31: function() { // LD HL **
+			Z80.core.ldntor('sp', Z80.mmu.rw(Z80.reg.pc + 1));
 			return 0x31;
 		},
-		0x32: function(name) { //LD (**),a
-			Z80.core.ldnto$nn(Z80.mmu.rw(Z80.reg.pc + 1), Z80.reg.a);
-			Z80.reg.pc++;
+		0x32: function() { //LD (**),a
+			Z80.core.ldnto$nn(Z80.mmu.rb(Z80.reg.pc + 1), Z80.reg.a);
 			return 0x32;
 		},
-		// 0x33: function(name){//nop
+		// 0x33: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x33;
 		// },
-		// 0x34: function(name){//nop
+		// 0x34: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x34;
 		// },
-		// 0x35: function(name){//nop
+		// 0x35: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x35;
 		// },
-		0x36: function(name) { //LD (HL), *
+		0x36: function() { //LD (HL), *
 			Z80.core.ldnto$rr('d', 'e', Z80.mmu.rb(Z80.reg.pc + 1));
 			Z80.reg.pc++;
 			return 0x36;
 		},
-		// 0x37: function(name){//nop
+		// 0x37: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x37;
 		// },
-		// 0x38: function(name){//nop
+		// 0x38: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x38;
 		// },
-		// 0x39: function(name){//nop
+		// 0x39: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x39;
 		// },
-		0x3a: function(name) { // ld a,(**)
+		0x3a: function() { // ld a,(**)
 			Z80.core.ldntor('a', Z80.mem[Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1))]);
 			Z80.reg.pc++;
 			return 0x3a;
 		},
-		// 0x3b: function(name){//nop
+		// 0x3b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x3b;
 		// },
-		// 0x3c: function(name){//nop
+		// 0x3c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x3c;
 		// },
-		// 0x3d: function(name){//nop
+		// 0x3d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x3d;
 		// },
-		0x3e: function(name) { // LD A *
+		0x3e: function() { // LD A *
 			Z80.core.ldntor('a', Z80.mmu.rb(Z80.reg.pc + 1));
 			return 0x3e;
 		},
-		// 0x3f: function(name){//nop
+		// 0x3f: function(){//nop
+		// 	
+		// 	return 0x3f;
+		// },
+		0x40: function(){// ld b,b
+			Z80.core.ldntor('b', Z80.reg.b);
+			return 0x40;
+		},
+		0x41: function(){// ld b,c
+			Z80.core.ldntor('b', Z80.reg.c);			
+			return 0x41;
+		},
+		0x42: function(){// ld b,d
+			Z80.core.ldntor('b', Z80.reg.d);			
+			return 0x42;
+		},
+		0x43: function(){// ld b,e
+			Z80.core.ldntor('b', Z80.reg.e);			
+			return 0x43;
+		},
+		0x44: function(){// ld b,h
+			Z80.core.ldntor('b', Z80.reg.h);			
+			return 0x44;
+		},
+		0x45: function(){// ld b,l
+			Z80.core.ldntor('b', Z80.reg.l);			
+			return 0x45;
+		},
+		0x46: function(){// ld b,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'b');
+			return 0x46;
+		},
+		0x47: function(){// ld b,a
+			Z80.core.ldntor('b', Z80.reg.a);	
+			return 0x47;
+		},
+		0x48: function(){// ld c,b
+			Z80.core.ldntor('c', Z80.reg.b);	
+			return 0x48;
+		},
+		0x49: function(){// ld c,c
+			Z80.core.ldntor('c', Z80.reg.c);	
+			return 0x49;
+		},
+		0x4a: function(){// ld c,d
+			Z80.core.ldntor('c', Z80.reg.d);	
+			return 0x4a;
+		},
+		0x4b: function(){// ld c,e
+			Z80.core.ldntor('c', Z80.reg.e);	
+			return 0x4b;
+		},
+		0x4c: function(){// ld c,h
+			Z80.core.ldntor('c', Z80.reg.h);	
+			return 0x4c;
+		},
+		0x4d: function(){// ld c,l
+			Z80.core.ldntor('c', Z80.reg.l);	
+			return 0x4d;
+		},
+		0x4e: function(){// ld c,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'c');
+			return 0x4e;
+		},
+		0x4f: function(){// ld c,a
+			Z80.core.ldntor('c', Z80.reg.c);
+			
+			ret0x4fname;
+		},
+		0x50: function(){// ld d,b
+			Z80.core.ldntor('d', Z80.reg.b);			
+			return 0x50;
+		},
+		0x51: function(){// ld d,c
+			Z80.core.ldntor('d', Z80.reg.c);			
+			return 0x51;
+		},
+		0x52: function(){// ld d,d
+			Z80.core.ldntor('d', Z80.reg.d);				
+			return 0x52;
+		},
+		0x53: function(){// ld d,e
+			Z80.core.ldntor('d', Z80.reg.e);				
+			return 0x53;
+		},
+		0x54: function(){// ld d,h
+			Z80.core.ldntor('d', Z80.reg.h);				
+			return 0x54;
+		},
+		0x55: function(){// ld d,l
+			Z80.core.ldntor('d', Z80.reg.l);				
+			return 0x55;
+		},
+		0x56: function(){// ld d,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'd');
+			return 0x56;
+		},
+		0x57: function(){// ld d,a
+			Z80.core.ldntor('d', Z80.reg.a);				
+			return 0x57;
+		},
+		0x58: function(){// ld e,b
+			Z80.core.ldntor('e', Z80.reg.b);				
+			return 0x58;
+		},
+		0x59: function(){// ld e,c
+			Z80.core.ldntor('e', Z80.reg.c);				
+			return 0x59;
+		},
+		0x5a: function(){// ld e,d
+			Z80.core.ldntor('e', Z80.reg.d);				
+			return 0x5a;
+		},
+		0x5b: function(){// ld e,e
+			Z80.core.ldntor('e', Z80.reg.e);				
+			return 0x5b;
+		},
+		0x5c: function(){// ld e,h
+			Z80.core.ldntor('e', Z80.reg.h);				
+			return 0x5c;
+		},
+		0x5d: function(){// ld e,l
+			Z80.core.ldntor('e', Z80.reg.l);				
+			return 0x5d;
+		},
+		0x5e: function(){// ld e,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'e');
+			return 0x5e;
+		},
+		0x5f: function(){// ld e,a
+			Z80.core.ldntor('e', Z80.reg.a);				
+			return 0x5f;
+		},
+		0x60: function(){// ld h,b
+			Z80.core.ldntor('h', Z80.reg.b);				
+			return 0x60;
+		},
+		0x61: function(){// ld h,c
+			Z80.core.ldntor('h', Z80.reg.c);				
+			return 0x61;
+		},
+		0x62: function(){// ld h,d
+			Z80.core.ldntor('h', Z80.reg.d);				
+			return 0x62;
+		},
+		0x63: function(){// ld h,e
+			Z80.core.ldntor('h', Z80.reg.e);				
+			return 0x63;
+		},
+		0x64: function(){// ld h,h
+			Z80.core.ldntor('h', Z80.reg.h);				
+			return 0x64;
+		},
+		0x65: function(){// ld h,l
+			Z80.core.ldntor('h', Z80.reg.l);				
+			return 0x65;
+		},
+		0x66: function(){// ld h,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'h');
+			return 0x66;
+		},
+		0x67: function(){//ld h,a
+			Z80.core.ldntor('h', Z80.reg.a);				
+			return 0x67;
+		},
+		0x68: function(){// ld l,b
+			Z80.core.ldntor('l', Z80.reg.b);				
+			return 0x68;
+		},
+		0x69: function(){// ld l,c
+			Z80.core.ldntor('l', Z80.reg.c);				
+			return 0x69;
+		},
+		0x6a: function(){// ld l,d
+			Z80.core.ldntor('l', Z80.reg.d);				
+			return 0x6a;
+		},
+		0x6b: function(){// ld l,e
+			Z80.core.ldntor('l', Z80.reg.e);				
+			return 0x6b;
+		},
+		0x6c: function(){// ld l,h
+			Z80.core.ldntor('l', Z80.reg.h);				
+			return 0x6c;
+		},
+		0x6d: function(){// ld l,l
+			Z80.core.ldntor('l', Z80.reg.l);				
+			return 0x6d;
+		},
+		0x6e: function(){// ld b,(hl)
+			Z80.core.ld$rrtor('h', 'l', 'l');
+			return 0x6e;
+		},
+		0x6f: function(){//ld l,a
+			Z80.core.ldntor('l', Z80.reg.a);				
+			return 0x6f;
+		},
+		// 0x70: function(){//nop
+		// 	
+		// 	return 0x70;
+		// },
+		// 0x71: function(){//nop
+		// 	
+		// 	return 0x71;
+		// },
+		// 0x72: function(){//nop
+		// 	
+		// 	return 0x72;
+		// },
+		// 0x73: function(){//nop
+		// 	
+		// 	return 0x73;
+		// },
+		// 0x74: function(){//nop
+		// 	
+		// 	return 0x74;
+		// },
+		// 0x75: function(){//nop
+		// 	
+		// 	return 0x75;
+		// },
+		0x76: function(){// halt
+			Z80.halt = true;
+			return 0x76;
+		},
+		// 0x77: function(){//nop
+		// 	
+		// 	return 0x77;
+		// },
+		0x78: function(){// ld a,b
+			Z80.core.ldntor('a', Z80.reg.b);				
+			return 0x78;
+		},
+		0x79: function(){// ld a,c
+			Z80.core.ldntor('a', Z80.reg.c);				
+			return 0x79;
+		},
+		0x7a: function(){// ld a,d
+			Z80.core.ldntor('a', Z80.reg.d);				
+			return 0x7a;
+		},
+		0x7b: function(){// ld a,e
+			Z80.core.ldntor('a', Z80.reg.e);			
+			return 0x7b;
+		},
+		0x7c: function(){// ld a,h
+			Z80.core.ldntor('a', Z80.reg.h);				
+			return 0x7c;
+		},
+		0x7d: function(){// ld a,l
+			Z80.core.ldntor('a', Z80.reg.l);				
+			return 0x7d;
+		},
+		// 0x7e: function(){//nop
+		// 	
+		// 	return 0x7e;
+		// },
+		0x7f: function(){// ld a,a
+			Z80.core.ldntor('a', Z80.reg.a);				
+			return 0x7f;
+		},
+		// 0x80: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x80;
 		// },
-		// 0x40: function(name){//nop
+		// 0x81: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x81;
 		// },
-		// 0x41: function(name){//nop
+		// 0x82: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x82;
 		// },
-		// 0x42: function(name){//nop
+		// 0x83: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x83;
 		// },
-		// 0x43: function(name){//nop
+		// 0x84: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x84;
 		// },
-		// 0x44: function(name){//nop
+		// 0x85: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x85;
 		// },
-		// 0x45: function(name){//nop
+		// 0x86: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x86;
 		// },
-		// 0x46: function(name){//nop
+		// 0x87: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x87;
 		// },
-		// 0x47: function(name){//nop
+		// 0x88: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x88;
 		// },
-		// 0x48: function(name){//nop
+		// 0x89: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x89;
 		// },
-		// 0x49: function(name){//nop
+		// 0x8a: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8a;
 		// },
-		// 0x4a: function(name){//nop
+		// 0x8b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8b;
 		// },
-		// 0x4b: function(name){//nop
+		// 0x8c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8c;
 		// },
-		// 0x4c: function(name){//nop
+		// 0x8d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8d;
 		// },
-		// 0x4d: function(name){//nop
+		// 0x8e: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8e;
 		// },
-		// 0x4e: function(name){//nop
+		// 0x8f: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x8f;
 		// },
-		// 0x4f: function(name){//nop
+		// 0x90: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x90;
 		// },
-		// 0x50: function(name){//nop
+		// 0x91: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x91;
 		// },
-		// 0x51: function(name){//nop
+		// 0x92: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x92;
 		// },
-		// 0x52: function(name){//nop
+		// 0x93: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x93;
 		// },
-		// 0x53: function(name){//nop
+		// 0x94: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x94;
 		// },
-		// 0x54: function(name){//nop
+		// 0x95: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x95;
 		// },
-		// 0x55: function(name){//nop
+		// 0x96: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x96;
 		// },
-		// 0x56: function(name){//nop
+		// 0x97: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x97;
 		// },
-		// 0x57: function(name){//nop
+		// 0x98: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x98;
 		// },
-		// 0x58: function(name){//nop
+		// 0x99: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x99;
 		// },
-		// 0x59: function(name){//nop
+		// 0x9a: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9a;
 		// },
-		// 0x5a: function(name){//nop
+		// 0x9b: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9b;
 		// },
-		// 0x5b: function(name){//nop
+		// 0x9c: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9c;
 		// },
-		// 0x5c: function(name){//nop
+		// 0x9d: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9d;
 		// },
-		// 0x5d: function(name){//nop
+		// 0x9e: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9e;
 		// },
-		// 0x5e: function(name){//nop
+		// 0x9f: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0x9f;
 		// },
-		// 0x5f: function(name){//nop
+		// 0xa0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa0;
 		// },
-		// 0x60: function(name){//nop
+		// 0xa1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa1;
 		// },
-		// 0x61: function(name){//nop
+		// 0xa2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa2;
 		// },
-		// 0x62: function(name){//nop
+		// 0xa3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa3;
 		// },
-		// 0x63: function(name){//nop
+		// 0xa4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa4;
 		// },
-		// 0x64: function(name){//nop
+		// 0xa5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa5;
 		// },
-		// 0x65: function(name){//nop
+		// 0xa6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa6;
 		// },
-		// 0x66: function(name){//nop
+		// 0xa7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa7;
 		// },
-		// 0x67: function(name){//nop
+		// 0xa8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa8;
 		// },
-		// 0x68: function(name){//nop
+		// 0xa9: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xa9;
 		// },
-		// 0x69: function(name){//nop
+		// 0xaa: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xaa;
 		// },
-		// 0x6a: function(name){//nop
+		// 0xab: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xab;
 		// },
-		// 0x6b: function(name){//nop
+		// 0xac: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xac;
 		// },
-		// 0x6c: function(name){//nop
+		// 0xad: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xad;
 		// },
-		// 0x6d: function(name){//nop
+		// 0xae: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xae;
 		// },
-		// 0x6e: function(name){//nop
+		// 0xaf: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xaf;
 		// },
-		// 0x6f: function(name){//nop
+		// 0xb0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb0;
 		// },
-		// 0x70: function(name){//nop
+		// 0xb1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb1;
 		// },
-		// 0x71: function(name){//nop
+		// 0xb2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb2;
 		// },
-		// 0x72: function(name){//nop
+		// 0xb3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb3;
 		// },
-		// 0x73: function(name){//nop
+		// 0xb4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb4;
 		// },
-		// 0x74: function(name){//nop
+		// 0xb5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb5;
 		// },
-		// 0x75: function(name){//nop
+		// 0xb6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb6;
 		// },
-		// 0x76: function(name){//nop
+		// 0xb7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb7;
 		// },
-		// 0x77: function(name){//nop
+		// 0xb8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb8;
 		// },
-		// 0x78: function(name){//nop
+		// 0xb9: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xb9;
 		// },
-		// 0x79: function(name){//nop
+		// 0xba: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xba;
 		// },
-		// 0x7a: function(name){//nop
+		// 0xbb: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xbb;
 		// },
-		// 0x7b: function(name){//nop
+		// 0xbc: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xbc;
 		// },
-		// 0x7c: function(name){//nop
+		// 0xbd: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xbd;
 		// },
-		// 0x7d: function(name){//nop
+		// 0xbe: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xbe;
 		// },
-		// 0x7e: function(name){//nop
+		// 0xbf: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xbf;
 		// },
-		// 0x7f: function(name){//nop
+		// 0xc0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc0;
 		// },
-		// 0x80: function(name){//nop
+		// 0xc1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc1;
 		// },
-		// 0x81: function(name){//nop
+		// 0xc2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc2;
 		// },
-		// 0x82: function(name){//nop
+		// 0xc3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc3;
 		// },
-		// 0x83: function(name){//nop
+		// 0xc4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc4;
 		// },
-		// 0x84: function(name){//nop
+		// 0xc5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc5;
 		// },
-		// 0x85: function(name){//nop
+		// 0xc6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc6;
 		// },
-		// 0x86: function(name){//nop
+		// 0xc7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc7;
 		// },
-		// 0x87: function(name){//nop
+		// 0xc8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc8;
 		// },
-		// 0x88: function(name){//nop
+		// 0xc9: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xc9;
 		// },
-		// 0x89: function(name){//nop
+		// 0xca: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xca;
 		// },
-		// 0x8a: function(name){//nop
+		// 0xcb: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xcb;
 		// },
-		// 0x8b: function(name){//nop
+		// 0xcc: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xcc;
 		// },
-		// 0x8c: function(name){//nop
+		// 0xcd: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xcd;
 		// },
-		// 0x8d: function(name){//nop
+		// 0xce: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xce;
 		// },
-		// 0x8e: function(name){//nop
+		// 0xcf: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xcf;
 		// },
-		// 0x8f: function(name){//nop
+		// 0xd0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd0;
 		// },
-		// 0x90: function(name){//nop
+		// 0xd1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd1;
 		// },
-		// 0x91: function(name){//nop
+		// 0xd2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd2;
 		// },
-		// 0x92: function(name){//nop
+		// 0xd3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd3;
 		// },
-		// 0x93: function(name){//nop
+		// 0xd4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd4;
 		// },
-		// 0x94: function(name){//nop
+		// 0xd5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd5;
 		// },
-		// 0x95: function(name){//nop
+		// 0xd6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd6;
 		// },
-		// 0x96: function(name){//nop
+		// 0xd7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd7;
 		// },
-		// 0x97: function(name){//nop
+		// 0xd8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd8;
 		// },
-		// 0x98: function(name){//nop
+		// 0xd9: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xd9;
 		// },
-		// 0x99: function(name){//nop
+		// 0xda: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xda;
 		// },
-		// 0x9a: function(name){//nop
+		// 0xdb: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xdb;
 		// },
-		// 0x9b: function(name){//nop
+		// 0xdc: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xdc;
 		// },
-		// 0x9c: function(name){//nop
+		// 0xdd: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xdd;
 		// },
-		// 0x9d: function(name){//nop
+		// 0xde: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xde;
 		// },
-		// 0x9e: function(name){//nop
+		// 0xdf: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xdf;
 		// },
-		// 0x9f: function(name){//nop
+		// 0xe0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe0;
 		// },
-		// 0xa0: function(name){//nop
+		// 0xe1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe1;
 		// },
-		// 0xa1: function(name){//nop
+		// 0xe2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe2;
 		// },
-		// 0xa2: function(name){//nop
+		// 0xe3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe3;
 		// },
-		// 0xa3: function(name){//nop
+		// 0xe4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe4;
 		// },
-		// 0xa4: function(name){//nop
+		// 0xe5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe5;
 		// },
-		// 0xa5: function(name){//nop
+		// 0xe6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe6;
 		// },
-		// 0xa6: function(name){//nop
+		// 0xe7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe7;
 		// },
-		// 0xa7: function(name){//nop
+		// 0xe8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe8;
 		// },
-		// 0xa8: function(name){//nop
+		// 0xe9: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xe9;
 		// },
-		// 0xa9: function(name){//nop
+		// 0xea: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xea;
 		// },
-		// 0xaa: function(name){//nop
+		// 0xeb: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xeb;
 		// },
-		// 0xab: function(name){//nop
+		// 0xec: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xec;
 		// },
-		// 0xac: function(name){//nop
+		// 0xed: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xed;
 		// },
-		// 0xad: function(name){//nop
+		// 0xee: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xee;
 		// },
-		// 0xae: function(name){//nop
+		// 0xef: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xef;
 		// },
-		// 0xaf: function(name){//nop
+		// 0xf0: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf0;
 		// },
-		// 0xb0: function(name){//nop
+		// 0xf1: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf1;
 		// },
-		// 0xb1: function(name){//nop
+		// 0xf2: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf2;
 		// },
-		// 0xb2: function(name){//nop
+		// 0xf3: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf3;
 		// },
-		// 0xb3: function(name){//nop
+		// 0xf4: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf4;
 		// },
-		// 0xb4: function(name){//nop
+		// 0xf5: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf5;
 		// },
-		// 0xb5: function(name){//nop
+		// 0xf6: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf6;
 		// },
-		// 0xb6: function(name){//nop
+		// 0xf7: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf7;
 		// },
-		// 0xb7: function(name){//nop
+		// 0xf8: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xf8;
 		// },
-		// 0xb8: function(name){//nop
+		0xf9: function(){// ld sp,hl
+			Z80.core.ldntor('sp',Z80.utils.dBy2W([Z80.reg.h,Z80.reg.h]));
+			return 0xf9;
+		},
+		// 0xfa: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xfa;
 		// },
-		// 0xb9: function(name){//nop
+		// 0xfb: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xfb;
 		// },
-		// 0xba: function(name){//nop
+		// 0xfc: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xfc;
 		// },
-		// 0xbb: function(name){//nop
+		// 0xfd: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xfd;
 		// },
-		// 0xbc: function(name){//nop
+		// 0xfe: function(){//nop
 		// 	
-		// 	return name;
+		// 	return 0xfe;
 		// },
-		// 0xbd: function(name){//nop
+		// 0xff: function(){//nop
 		// 	
-		// 	return name;
-		// },
-		// 0xbe: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xbf: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc0: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc1: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc2: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc3: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc4: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc5: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc6: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc7: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc8: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xc9: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xca: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xcb: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xcc: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xcd: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xce: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xcf: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd0: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd1: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd2: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd3: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd4: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd5: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd6: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd7: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd8: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xd9: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xda: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xdb: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xdc: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xdd: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xde: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xdf: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe0: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe1: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe2: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe3: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe4: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe5: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe6: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe7: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe8: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xe9: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xea: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xeb: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xec: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xed: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xee: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xef: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf0: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf1: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf2: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf3: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf4: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf5: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf6: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf7: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf8: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xf9: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xfa: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xfb: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xfc: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xfd: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xfe: function(name){//nop
-		// 	
-		// 	return name;
-		// },
-		// 0xff: function(name){//nop
-		// 	
-		// 	return name;
+		// 	return 0xff;
 		// },
 	},
 	reg: {
@@ -1170,13 +1171,13 @@ var Z80 = {
 			return [Z80.mem[addr + 1], Z80.mem[addr]]; // little endian?
 		},
 		wb: function(addr, data) { //8bit write
-			Z80.mem[addr] = data
-			return name;
+			Z80.mem[addr] = data;
+			return true;
 		},
 		ww: function(addr, data) { //16bit write
 			Z80.mem[addr + 1] = data[0]; // little endian?
 			Z80.mem[addr] = data[1]; // little endian?
-			return name;
+			return true;
 		},
 	},
 
