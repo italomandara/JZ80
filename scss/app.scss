@@ -93,3 +93,10 @@ color: $primary-color;
 	color: $primary-color;
 	cursor: pointer;
 }
+
+.row.padded{
+	padding: $topbar-padding;
+}
+// .menu-text:first-child{
+// 	padding-left: 0;
+// }

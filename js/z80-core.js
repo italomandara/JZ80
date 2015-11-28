@@ -142,7 +142,12 @@ var Z80 = {
 			Z80.reg.a = Z80.reg.a | data,
 			Z80.utils.flag_V(!Z80.utils.rdBit(0,Z80.reg.a) && Z80.reg.a);
 			Z80.utils.flag_Z(!Z80.reg.a);
-		}
+		},
+		xor: function(data){
+			Z80.reg.a = Z80.reg.a ^ data,
+			Z80.utils.flag_V(!Z80.utils.rdBit(0,Z80.reg.a) && Z80.reg.a);
+			Z80.utils.flag_Z(!Z80.reg.a);
+		},
 	},
 	op: {
 		0x00: function() { // nop
@@ -1068,46 +1073,54 @@ var Z80 = {
 			Z80.clock.m = 4; 	
 			return 0xa7;
 		},
-		// 0xa8: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa8;
-		// },
-		// 0xa9: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xa9;
-		// },
-		// 0xaa: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xaa;
-		// },
-		// 0xab: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xab;
-		// },
-		// 0xac: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xac;
-		// },
-		// 0xad: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xad;
-		// },
-		// 0xae: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xae;
-		// },
-		// 0xaf: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xaf;
-		// },
+		0xa8: function(){// xor b
+			Z80.core.xor(Z80.reg.b);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa8;
+		},
+		0xa9: function(){// xor c
+			Z80.core.xor(Z80.reg.c);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xa9;
+		},
+		0xaa: function(){// xor d
+			Z80.core.xor(Z80.reg.d);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xaa;
+		},
+		0xab: function(){// xor e
+			Z80.core.xor(Z80.reg.e);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xab;
+		},
+		0xac: function(){// xor h
+			Z80.core.xor(Z80.reg.h);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xac;
+		},
+		0xad: function(){// xor l
+			Z80.core.xor(Z80.reg.l);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xad;
+		},
+		0xae: function(){// and (hl)
+			Z80.core.xor(Z80.mmu.rb(Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l])));
+			Z80.reg.pc += 1;
+			Z80.clock.m = 7; 	
+			return 0xae;
+		},
+		0xaf: function(){// xor a
+			Z80.core.xor(Z80.reg.a);
+			Z80.reg.pc += 1;
+			Z80.clock.m = 4; 	
+			return 0xaf;
+		},
 		0xb0: function(){//or b
 			Z80.core.or(Z80.reg.b);
 			Z80.reg.pc += 1;

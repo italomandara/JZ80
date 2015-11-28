@@ -1,7 +1,7 @@
 var debug = true,
 	offset = 0,
 	errorModal,
-	paginate_by = 92,
+	paginate_by = 128,
 	z80per = Math.round(Object.keys(Z80.op).length / 0xff * 100),
 	z80tot = Object.keys(Z80.op).length,
 	page_elements = Z80.mem.length / paginate_by,
@@ -43,7 +43,7 @@ var debgr = function(obj) {
 		$('#mem').html('');
 		for (i = offset; i < Z80.mem.length / page_elements + offset; i++) {
 			$('#mem').append([
-				'<div class="small-6 medium-3 large-2 column ', Z80.mem[i] ? css_class : '', '"><div class="input-group"><span class="input-group-label">', hex(i, 16), ': </span><input class="input-group-field js-write-mem" type="text" id="', i, '" placeholder="', hex(Z80.mem[i]), '"">'
+				'<div class="small-6 medium-3 large-2 xlarge-1 column ', Z80.mem[i] ? css_class : '', '"><div class="input-group"><span class="input-group-label">', hex(i, 16), ': </span><input class="input-group-field js-write-mem" type="text" id="', i, '" placeholder="', hex(Z80.mem[i]), '"">'
 				// , '<a class="input-group-button button"></a></div></div>'
 			].join(''));
 		}
@@ -80,7 +80,7 @@ var paginate = function(offset) {
 $(function() {
 	if (debug) {
 		$('body').html([
-			'<div class="top-bar">',
+			'<div class="top-bar"><div class="row">',
 			'<div class="top-bar-left">',
 			'<ul class="dropdown menu" data-dropdown-menu>',
 			'<li class="menu-text">Z80 Debugger</li>',
@@ -93,10 +93,10 @@ $(function() {
 			'<li><a class="js-reset" href="javascript:void(0);">Reset</a></li>',
 			'<li><a data-open="oplist" href="javascript:void(0);">Available Instructions Set</a></li>',
 			'</ul>',
+			'</div></div>',
 			'</div>',
-			'</div>',
-			'<div class="row mt40"><div class="hide float-left"><label>Paginate by<input class="js-paginate-by" type="number" value="', paginate_by, '"></label></div><div class="float-left"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div></div>',
-			'<div class="row">',
+			'<div class="row padded mt40"><div class="hide float-left"><label>Paginate by<input class="js-paginate-by" type="number" value="', paginate_by, '"></label></div><div class="float-left"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div></div>',
+			'<div class="row padded">',
 			'<div class="medium-7 large-8 column" ><div id="mem" class="row"></div></div>',
 			'<div id="regs" class="medium-3 large-2 column" ></div>',
 			'<div id="input" class="medium-2 large-2 column">',

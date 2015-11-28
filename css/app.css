@@ -358,7 +358,7 @@ body.is-reveal-open {
   overflow: hidden; }
 
 .foundation-mq {
-  font-family: "small=0em&medium=53.33333em&large=85.33333em&xlarge=100em&xxlarge=120em"; }
+  font-family: "small=0em&medium=42.66667em&large=68.26667em&xlarge=80em&xxlarge=96em"; }
 
 .slide-in-down.mui-enter, .slide-in-left.mui-enter, .slide-in-up.mui-enter, .slide-in-right.mui-enter, .slide-out-down.mui-leave, .slide-out-right.mui-leave, .slide-out-up.mui-leave, .slide-out-left.mui-leave, .fade-in.mui-enter, .fade-out.mui-leave, .hinge-in-from-top.mui-enter, .hinge-in-from-right.mui-enter, .hinge-in-from-bottom.mui-enter, .hinge-in-from-left.mui-enter, .hinge-in-from-middle-x.mui-enter, .hinge-in-from-middle-y.mui-enter, .hinge-out-from-top.mui-leave, .hinge-out-from-right.mui-leave, .hinge-out-from-bottom.mui-leave, .hinge-out-from-left.mui-leave, .hinge-out-from-middle-x.mui-leave, .hinge-out-from-middle-y.mui-leave, .scale-in-up.mui-enter, .scale-in-down.mui-enter, .scale-out-up.mui-leave, .scale-out-down.mui-leave, .spin-in.mui-enter, .spin-out.mui-leave, .spin-in-ccw.mui-enter, .spin-out-ccw.mui-leave {
   transition-duration: 500ms;
@@ -422,7 +422,7 @@ button {
   line-height: 1; }
 
 .row {
-  max-width: 75rem;
+  max-width: 81.25rem;
   margin-left: auto;
   margin-right: auto; }
   .row::before, .row::after {
@@ -434,8 +434,8 @@ button {
     padding-left: 0;
     padding-right: 0; }
   .row .row {
-    margin-left: -1.25rem;
-    margin-right: -1.25rem; }
+    margin-left: -1rem;
+    margin-right: -1rem; }
     .row .row.collapse {
       margin-left: 0;
       margin-right: 0; }
@@ -445,14 +445,14 @@ button {
   .row.small-uncollapse > .column, .row.small-uncollapse > .columns {
     padding-left: 30px;
     padding-right: 30px; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .row.medium-collapse > .column, .row.medium-collapse > .columns {
       padding-left: 0;
       padding-right: 0; }
     .row.medium-uncollapse > .column, .row.medium-uncollapse > .columns {
       padding-left: 30px;
       padding-right: 30px; } }
-  @media screen and (min-width: 85.33333em) {
+  @media screen and (min-width: 68.26667em) {
     .row.large-collapse > .column, .row.large-collapse > .columns {
       padding-left: 0;
       padding-right: 0; }
@@ -465,8 +465,8 @@ button {
 .column, .columns {
   width: 100%;
   float: left;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem; }
+  padding-left: 1rem;
+  padding-right: 1rem; }
   .column:last-child:not(:first-child), .columns:last-child:not(:first-child) {
     float: right; }
   .column.end:last-child, .end.columns:last-child {
@@ -707,7 +707,7 @@ button {
   margin-left: 0;
   margin-right: 0; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .medium-1 {
     width: 8.33333%; }
   .medium-push-1 {
@@ -887,7 +887,7 @@ button {
     margin-left: 0;
     margin-right: 0; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .large-1 {
     width: 8.33333%; }
   .large-push-1 {
@@ -1133,36 +1133,36 @@ h6 {
     line-height: 0; }
 
 h1 {
-  font-size: 2rem; }
+  font-size: 1.6rem; }
 
 h2 {
-  font-size: 1.66667rem; }
-
-h3 {
-  font-size: 1.58333rem; }
-
-h4 {
-  font-size: 1.5rem; }
-
-h5 {
-  font-size: 1.41667rem; }
-
-h6 {
   font-size: 1.33333rem; }
 
-@media screen and (min-width: 53.33333em) {
+h3 {
+  font-size: 1.26667rem; }
+
+h4 {
+  font-size: 1.2rem; }
+
+h5 {
+  font-size: 1.13333rem; }
+
+h6 {
+  font-size: 1.06667rem; }
+
+@media screen and (min-width: 42.66667em) {
   h1 {
-    font-size: 4rem; }
+    font-size: 3.2rem; }
   h2 {
-    font-size: 3.33333rem; }
+    font-size: 2.66667rem; }
   h3 {
-    font-size: 2.58333rem; }
+    font-size: 2.06667rem; }
   h4 {
-    font-size: 2.08333rem; }
-  h5 {
     font-size: 1.66667rem; }
+  h5 {
+    font-size: 1.33333rem; }
   h6 {
-    font-size: 1.33333rem; } }
+    font-size: 1.06667rem; } }
 
 a {
   color: #445577;
@@ -1175,11 +1175,11 @@ a {
     border: 0; }
 
 hr {
-  max-width: 75rem;
+  max-width: 81.25rem;
   height: 0;
   border-top: 0;
   border-bottom: 1px solid #cacaca;
-  margin: 1.66667rem auto;
+  margin: 1.33333rem auto;
   clear: both; }
 
 ul,
@@ -1212,7 +1212,7 @@ dl {
 
 blockquote {
   margin: 0 0 1rem;
-  padding: 0.75rem 1.66667rem 0 1.58333rem;
+  padding: 0.6rem 1.33333rem 0 1.26667rem;
   border-left: 1px solid #cacaca; }
   blockquote, blockquote p {
     line-height: 1.6;
@@ -1220,7 +1220,7 @@ blockquote {
 
 cite {
   display: block;
-  font-size: 1.08333rem;
+  font-size: 0.86667rem;
   color: #8a8a8a; }
   cite:before {
     content: '\2014 \0020'; }
@@ -1236,10 +1236,10 @@ code {
   color: #0a0a0a;
   background-color: #e6e6e6;
   border: 1px solid #cacaca;
-  padding: 0.16667rem 0.41667rem 0.08333rem; }
+  padding: 0.13333rem 0.33333rem 0.06667rem; }
 
 kbd {
-  padding: 0.16667rem 0.33333rem 0;
+  padding: 0.13333rem 0.26667rem 0;
   margin: 0;
   background-color: #e6e6e6;
   color: #0a0a0a;
@@ -1269,44 +1269,44 @@ kbd {
 .text-left {
   text-align: left; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .medium-text-left {
     text-align: left; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .large-text-left {
     text-align: left; } }
 
 .text-right {
   text-align: right; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .medium-text-right {
     text-align: right; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .large-text-right {
     text-align: right; } }
 
 .text-center {
   text-align: center; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .medium-text-center {
     text-align: center; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .large-text-center {
     text-align: center; } }
 
 .text-justify {
   text-align: justify; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .medium-text-justify {
     text-align: justify; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .large-text-justify {
     text-align: justify; } }
 
@@ -1494,12 +1494,12 @@ textarea {
   display: block;
   box-sizing: border-box;
   width: 100%;
-  height: 1.66667rem;
-  padding: 0.25rem;
+  height: 1.33333rem;
+  padding: 0.2rem;
   border: 1px solid #cacaca;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: #8a8a8a;
   background-color: #fefefe;
   box-shadow: none;
@@ -1538,19 +1538,19 @@ input[type="search"] {
 [type="file"],
 [type="checkbox"],
 [type="radio"] {
-  margin: 0 0 0.5rem; }
+  margin: 0 0 0.4rem; }
 
 [type="checkbox"] + label,
 [type="radio"] + label {
   display: inline-block;
-  margin-left: 0.25rem;
-  margin-right: 0.5rem;
+  margin-left: 0.2rem;
+  margin-right: 0.4rem;
   margin-bottom: 0;
   vertical-align: baseline; }
 
 label > [type="checkbox"],
 label > [type="label"] {
-  margin-right: 0.25rem; }
+  margin-right: 0.2rem; }
 
 [type="file"] {
   width: 100%; }
@@ -1558,24 +1558,24 @@ label > [type="label"] {
 label {
   display: block;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: normal;
   line-height: 1.8;
   color: #0a0a0a; }
   label.middle {
-    margin: 0 0 0.5rem;
-    padding: 0.33333rem 0; }
+    margin: 0 0 0.4rem;
+    padding: 0.26667rem 0; }
 
 .help-text {
-  margin-top: -0.25rem;
-  font-size: 0.83333rem;
+  margin-top: -0.2rem;
+  font-size: 0.66667rem;
   font-style: italic;
   color: #333; }
 
 .input-group {
   display: table;
   width: 100%;
-  margin-bottom: 0.5rem; }
+  margin-bottom: 0.4rem; }
 
 .input-group-label, .input-group-field, .input-group-button {
   display: table-cell;
@@ -1608,25 +1608,25 @@ fieldset {
   margin: 0; }
 
 legend {
-  margin-bottom: 0.25rem; }
+  margin-bottom: 0.2rem; }
 
 .fieldset {
   border: 1px solid #cacaca;
-  padding: 0.83333rem;
-  margin: 1.5rem 0; }
+  padding: 0.66667rem;
+  margin: 1.2rem 0; }
   .fieldset legend {
     background: #fefefe;
-    padding: 0 0.25rem;
+    padding: 0 0.2rem;
     margin: 0;
-    margin-left: -0.25rem; }
+    margin-left: -0.2rem; }
 
 select {
-  height: 1.66667rem;
-  padding: 0.25rem;
+  height: 1.33333rem;
+  padding: 0.2rem;
   border: 1px solid #cacaca;
   border-radius: 2px;
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
   font-family: inherit;
   line-height: normal;
   color: #8a8a8a;
@@ -1636,7 +1636,7 @@ select {
   -moz-appearance: none;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb(51, 51, 51)"></polygon></svg>');
   background-size: 9px 6px;
-  background-position: right 0.25rem center;
+  background-position: right 0.2rem center;
   background-repeat: no-repeat; }
   @media screen and (min-width: 0\0) {
     select {
@@ -1658,9 +1658,9 @@ select {
 
 .form-error {
   display: none;
-  margin-top: -0.25rem;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+  margin-top: -0.2rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: #ec5840; }
   .form-error.is-visible {
@@ -1672,43 +1672,43 @@ select {
 .invisible {
   visibility: hidden; }
 
-@media screen and (min-width: 0em) and (max-width: 53.27083em) {
+@media screen and (min-width: 0em) and (max-width: 42.60417em) {
   .hide-for-small-only {
     display: none !important; } }
 
-@media screen and (max-width: 0em), screen and (min-width: 53.33333em) {
+@media screen and (max-width: 0em), screen and (min-width: 42.66667em) {
   .show-for-small-only {
     display: none !important; } }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .hide-for-medium {
     display: none !important; } }
 
-@media screen and (max-width: 53.27083em) {
+@media screen and (max-width: 42.60417em) {
   .show-for-medium {
     display: none !important; } }
 
-@media screen and (min-width: 53.33333em) and (max-width: 85.27083em) {
+@media screen and (min-width: 42.66667em) and (max-width: 68.20417em) {
   .hide-for-medium-only {
     display: none !important; } }
 
-@media screen and (max-width: 53.27083em), screen and (min-width: 85.33333em) {
+@media screen and (max-width: 42.60417em), screen and (min-width: 68.26667em) {
   .show-for-medium-only {
     display: none !important; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .hide-for-large {
     display: none !important; } }
 
-@media screen and (max-width: 85.27083em) {
+@media screen and (max-width: 68.20417em) {
   .show-for-large {
     display: none !important; } }
 
-@media screen and (min-width: 85.33333em) and (max-width: 99.9375em) {
+@media screen and (min-width: 68.26667em) and (max-width: 79.9375em) {
   .hide-for-large-only {
     display: none !important; } }
 
-@media screen and (max-width: 85.27083em), screen and (min-width: 100em) {
+@media screen and (max-width: 68.20417em), screen and (min-width: 80em) {
   .show-for-large-only {
     display: none !important; } }
 
@@ -1780,7 +1780,7 @@ select {
   display: block;
   padding: 1.25rem 1rem;
   line-height: 1;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: #445577;
   position: relative;
   border-bottom: 1px solid #e6e6e6; }
@@ -1835,7 +1835,7 @@ select {
   .breadcrumbs li {
     float: left;
     color: #0a0a0a;
-    font-size: 0.91667rem;
+    font-size: 0.73333rem;
     cursor: default;
     text-transform: uppercase; }
     .breadcrumbs li:not(:last-child)::after {
@@ -1920,7 +1920,7 @@ select {
   .button-group.stacked .button, .button-group.stacked-for-small .button {
     width: 100%;
     border-right: 0; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .button-group.stacked-for-small .button {
       width: auto; }
       .button-group.stacked-for-small .button:not(:last-child) {
@@ -2148,9 +2148,9 @@ select {
 .flex-video {
   position: relative;
   height: 0;
-  padding-top: 2.08333rem;
+  padding-top: 1.66667rem;
   padding-bottom: 75%;
-  margin-bottom: 1.33333rem;
+  margin-bottom: 1.06667rem;
   overflow: hidden; }
   .flex-video iframe,
   .flex-video object,
@@ -2194,7 +2194,7 @@ select {
   display: block; }
   .media-object img {
     max-width: none; }
-  @media screen and (min-width: 0em) and (max-width: 53.27083em) {
+  @media screen and (min-width: 0em) and (max-width: 42.60417em) {
     .media-object.stack-for-small .media-object-section {
       display: block;
       padding: 0;
@@ -2243,12 +2243,12 @@ select {
     display: table-cell; }
   .menu.vertical > li {
     display: block; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .menu.medium-horizontal > li {
       display: table-cell; }
     .menu.medium-vertical > li {
       display: block; } }
-  @media screen and (min-width: 85.33333em) {
+  @media screen and (min-width: 68.26667em) {
     .menu.large-horizontal > li {
       display: table-cell; }
     .menu.large-vertical > li {
@@ -2369,7 +2369,7 @@ body {
           -ms-transform: translateX(-250px);
               transform: translateX(-250px); }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .position-left.reveal-for-medium {
     left: 0; }
     .position-left.reveal-for-medium ~ .off-canvas-content {
@@ -2379,7 +2379,7 @@ body {
     .position-right.reveal-for-medium ~ .off-canvas-content {
       margin-right: 250px; } }
 
-@media screen and (min-width: 85.33333em) {
+@media screen and (min-width: 68.26667em) {
   .position-left.reveal-for-large {
     left: 0; }
     .position-left.reveal-for-large ~ .off-canvas-content {
@@ -2467,20 +2467,20 @@ body {
   .pagination::after {
     clear: both; }
   .pagination li {
-    font-size: 0.83333rem;
-    margin-right: 0.08333rem;
+    font-size: 0.66667rem;
+    margin-right: 0.06667rem;
     display: none;
     border-radius: 2px; }
     .pagination li:last-child, .pagination li:first-child {
       display: inline-block; }
-    @media screen and (min-width: 53.33333em) {
+    @media screen and (min-width: 42.66667em) {
       .pagination li {
         display: inline-block; } }
   .pagination a,
   .pagination button {
     color: #0a0a0a;
     display: block;
-    padding: 0.25rem 0.83333rem;
+    padding: 0.2rem 0.66667rem;
     border-radius: 2px; }
     .pagination a:hover,
     .pagination button:hover {
@@ -2494,19 +2494,19 @@ body {
     display: inline-block;
     margin-left: 0.75rem; }
   .pagination .current {
-    padding: 0.25rem 0.83333rem;
+    padding: 0.2rem 0.66667rem;
     background: #445577;
     color: #fefefe;
     cursor: default; }
   .pagination .disabled {
-    padding: 0.25rem 0.83333rem;
+    padding: 0.2rem 0.66667rem;
     color: #cacaca;
     cursor: default; }
     .pagination .disabled:hover {
       background: transparent; }
   .pagination .ellipsis::after {
     content: '…';
-    padding: 0.25rem 0.83333rem;
+    padding: 0.2rem 0.66667rem;
     color: #0a0a0a; }
 
 .progress {
@@ -2669,7 +2669,7 @@ body {
   overflow-y: auto; }
   [data-whatinput="mouse"] .reveal {
     outline: 0; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .reveal {
       min-height: 0; } }
   .reveal .column, .reveal .columns,
@@ -2677,29 +2677,29 @@ body {
     min-width: 0; }
   .reveal > :last-child {
     margin-bottom: 0; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .reveal {
       width: 600px;
-      max-width: 75rem; } }
+      max-width: 81.25rem; } }
   .reveal.collapse {
     padding: 0; }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .reveal .reveal {
       left: auto;
       right: auto;
       margin: 0 auto; } }
-  @media screen and (min-width: 53.33333em) {
+  @media screen and (min-width: 42.66667em) {
     .reveal.tiny {
       width: 30%;
-      max-width: 75rem; } }
-  @media screen and (min-width: 53.33333em) {
+      max-width: 81.25rem; } }
+  @media screen and (min-width: 42.66667em) {
     .reveal.small {
       width: 50%;
-      max-width: 75rem; } }
-  @media screen and (min-width: 53.33333em) {
+      max-width: 81.25rem; } }
+  @media screen and (min-width: 42.66667em) {
     .reveal.large {
       width: 90%;
-      max-width: 75rem; } }
+      max-width: 81.25rem; } }
   .reveal.full {
     top: 0;
     left: 0;
@@ -2720,7 +2720,7 @@ body {
           user-select: none;
   color: #fefefe;
   font-weight: bold;
-  font-size: 1.16667rem; }
+  font-size: 0.93333rem; }
 
 .switch-input {
   opacity: 0;
@@ -2779,7 +2779,7 @@ body {
 .switch.tiny .switch-paddle {
   width: 3rem;
   height: 1.5rem;
-  font-size: 0.83333rem; }
+  font-size: 0.66667rem; }
 
 .switch.tiny .switch-paddle::after {
   width: 1rem;
@@ -2791,7 +2791,7 @@ body {
 .switch.small .switch-paddle {
   width: 3.5rem;
   height: 1.75rem;
-  font-size: 1rem; }
+  font-size: 0.8rem; }
 
 .switch.small .switch-paddle::after {
   width: 1.25rem;
@@ -2803,7 +2803,7 @@ body {
 .switch.large .switch-paddle {
   width: 5rem;
   height: 2.5rem;
-  font-size: 1.33333rem; }
+  font-size: 1.06667rem; }
 
 .switch.large .switch-paddle::after {
   width: 2rem;
@@ -2822,7 +2822,7 @@ table {
     background-color: #fefefe; }
   caption {
     font-weight: bold;
-    padding: 0.66667rem 0.83333rem 0.83333rem; }
+    padding: 0.53333rem 0.66667rem 0.66667rem; }
   thead,
   tfoot {
     background: #f8f8f8;
@@ -2834,16 +2834,16 @@ table {
     thead td,
     tfoot th,
     tfoot td {
-      padding: 0.66667rem 0.83333rem 0.83333rem;
+      padding: 0.53333rem 0.66667rem 0.66667rem;
       font-weight: bold;
       text-align: left; }
   tbody tr:nth-child(even) {
     background-color: #f1f1f1; }
   tbody th,
   tbody td {
-    padding: 0.66667rem 0.83333rem 0.83333rem; }
+    padding: 0.53333rem 0.66667rem 0.66667rem; }
 
-@media screen and (max-width: 85.27083em) {
+@media screen and (max-width: 68.20417em) {
   table.stack thead {
     display: none; }
   table.stack tfoot {
@@ -3081,7 +3081,7 @@ table.hover tr:nth-of-type(even):hover {
     width: 200px;
     margin-right: 1rem; }
 
-@media screen and (min-width: 53.33333em) {
+@media screen and (min-width: 42.66667em) {
   .top-bar-left {
     float: left; }
   .top-bar-right {
@@ -3713,3 +3713,6 @@ table.hover tr:nth-of-type(even):hover {
   text-decoration: undelined;
   color: #445577;
   cursor: pointer; }
+
+.row.padded {
+  padding: 0.5rem; }
