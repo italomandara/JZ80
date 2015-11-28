@@ -100,12 +100,12 @@ var Z80 = {
 			if (Z80.reg[reg] === 0xFF) {
 				Z80.utils.flag_C(true);
 				Z80.reg[reg] = 0;
-				return 0x04;
+				return 0x00;
 			}
 			if (Z80.reg[reg] >= 0x0F) {
 				Z80.utils.flag_H(true);
 			}
-			Z80.reg[reg]++;
+			Z80.reg[reg]--;
 			Z80.reg.pc += 1;
 		},
 		inc: function(n,double){
@@ -1263,11 +1263,10 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xca;
 		// },
-		// 0xcb: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xcb;
-		// },
+		0xcb: function(){// cb prefixed instructions
+			Z80.reg.pc ++;
+			return 0xcb00 | Z80.cbop[Z80.reg.pc];
+		},
 		// 0xcc: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1354,11 +1353,10 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xdc;
 		// },
-		// 0xdd: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xdd;
-		// },
+		0xdd: function(){// dd prefixed instructions
+			Z80.reg.pc ++;
+			return 0xdd | (Z80.ddop[Z80.reg.pc]() << 8);
+		},
 		// 0xde: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1434,11 +1432,10 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xec;
 		// },
-		// 0xed: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xed;
-		// },
+		0xed: function(){// ed prefixed instructions
+			Z80.reg.pc ++;
+			return 0xed | (Z80.edop[Z80.reg.pc]() << 8);
+		},
 		// 0xee: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1515,11 +1512,10 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xfc;
 		// },
-		// 0xfd: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xfd;
-		// },
+		0xfd: function(){// fd prefixed instructions
+			Z80.reg.pc ++;
+			return 0xfd | (Z80.fdop[Z80.reg.pc]() << 8);
+		},
 		// 0xfe: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
@@ -1529,6 +1525,31 @@ var Z80 = {
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
 		//	return 0xff;
+		// },
+	},
+	cbop: {
+		// 0x00: function(){// ld sp,hl
+		// return 0x00;
+		// },
+	},
+	edop: {
+		// 0x00: function(){// ld sp,hl
+		// return 0x00;
+		// },
+	},
+	ddop: {
+		// 0x00: function(){// ld sp,hl
+		// return 0x00;
+		// },
+	},
+	fdop: {
+		// 0x00: function(){// ld sp,hl
+		// return 0x00;
+		// },
+	},
+	fdcbop: {
+		// 0x00: function(){// ld sp,hl
+		// return 0x00;
 		// },
 	},
 	reg: {

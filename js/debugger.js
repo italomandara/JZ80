@@ -131,9 +131,43 @@ $(function() {
 			'<tbody>',
 		];
 		for (op in Z80.op) {
+			if(typeof ops_table[op] !== typeof undefined){
 			oplist.push([
 				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op, '"><td>', hex(parseInt(op, 10)), '</td><td>', ops_table[op].name, '</td><td>', ops_table[op].description, '</td></tr>'
 			].join(''));
+			}
+		}
+		for (op in Z80.cbop) {
+			op = 0xcb00 | op;
+			if(typeof ops_table[op] !== typeof undefined){
+			oplist.push([
+				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op, '"><td>', hex(parseInt(op, 10)), '</td><td>', ops_table[op].name, '</td><td>', ops_table[op].description, '</td></tr>'
+			].join(''));
+			}
+		}
+		for (op in Z80.edop) {
+			op = 0xed00 | op;
+			if(typeof ops_table[op] !== typeof undefined){
+			oplist.push([
+				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op, '"><td>', hex(parseInt(op, 10)), '</td><td>', ops_table[op].name, '</td><td>', ops_table[op].description, '</td></tr>'
+			].join(''));
+			}
+		}
+		for (op in Z80.ddop) {
+			op = 0xdd00 | op;
+			if(typeof ops_table[op] !== typeof undefined){
+			oplist.push([
+				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op, '"><td>', hex(parseInt(op, 10)), '</td><td>', ops_table[op].name, '</td><td>', ops_table[op].description, '</td></tr>'
+			].join(''));
+			}
+		}
+		for (op in Z80.fdop) {
+			op = 0xfd00 | op;
+			if(typeof ops_table[op] !== typeof undefined){
+			oplist.push([
+				'<tr class="js-exec-op op" data-close aria-label="Close reveal" data-op="', op, '"><td>', hex(parseInt(op, 10)), '</td><td>', ops_table[op].name, '</td><td>', ops_table[op].description, '</td></tr>'
+			].join(''));
+			}
 		}
 		oplist.push([
 			'</tbody>',
