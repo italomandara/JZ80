@@ -109,7 +109,7 @@ $(function() {
 			'<div class="reveal" id="oplist" data-reveal ></div>',
 			'<div class="tiny reveal" id="error" data-reveal >',
 			'<p class="lead">Error:</p><p id="error-type"></p>',
-			'<button class="close-button" data-close aria-label="Close reveal" type="button"></button></div>'
+			'<button class="close-button" data-close aria-label="Close reveal" type="button"><span aria-hidden="true">&times;</span></button></div>'
 		].join(''));
 		paginate(0);
 		var oplist = [
@@ -123,9 +123,9 @@ $(function() {
 			'<table>',
 			'<thead>',
 			'<tr>',
-			'<th width="200">Code</th>',
-			'<th width="500">Operation</th>',
-			'<th width="500">Description</th>',
+			'<th width="100">Code</th>',
+			'<th width="300">Operation</th>',
+			'<th width="800">Description</th>',
 			'</tr>',
 			'</thead>',
 			'<tbody>',

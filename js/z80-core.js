@@ -109,8 +109,9 @@ var Z80 = {
 			Z80.reg.pc += 1;
 		},
 		inc: function(n,double){
+			n++;
 			if (arguments.length<2){
-					Z80.clock.m = 11;
+				Z80.clock.m = 11;
 				if (n === 0x80) {
 					Z80.utils.flag_C(true);
 					n = 0;
@@ -119,12 +120,12 @@ var Z80 = {
 				if (n >= 0x0F) {
 					Z80.utils.flag_H(true);
 				}
-				n++;
 				Z80.reg.pc += 1;
 				return n
 			} else {
+				Z80.reg.pc += 1;
 				Z80.clock.m = 6;
-				return n++;
+				return n;
 			}			
 		},
 		swp: function(arr){
