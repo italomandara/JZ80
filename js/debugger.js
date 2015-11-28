@@ -2,7 +2,8 @@ var debug = true,
 	offset = 0,
 	errorModal,
 	paginate_by = 128,
-	z80per = Math.round(Object.keys(Z80.op).length / 0xff * 100),
+	z80max = 746,
+	z80per = Math.round(Object.keys(Z80.op).length / z80max * 100),
 	z80tot = Object.keys(Z80.op).length,
 	page_elements = Z80.mem.length / paginate_by,
 	updateMem = function(el) {
@@ -108,18 +109,19 @@ $(function() {
 			'</div>',
 			'<div class="reveal" id="oplist" data-reveal ></div>',
 			'<div class="tiny reveal" id="error" data-reveal >',
-			'<p class="lead">Error:</p><p id="error-type"></p>',
+			'<h4>Error:</h4><p id="error-type"></p>',
 			'<button class="close-button" data-close aria-label="Close reveal" type="button"><span aria-hidden="true">&times;</span></button></div>'
 		].join(''));
 		paginate(0);
 		var oplist = [
-			'<p class="lead">Available operations:</p>',
+			'<h4>Available operations:</h4>',
 			'<p>In this table: on the left hexadecial code of the Operation, on the right </p>',
 			'<div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">',
 			'<span class="progress-meter" style="width: ', z80per ,'%">',
-			'<p class="progress-meter-text">', z80per  ,'% (',z80tot,' out of ',0xff,')</p>',
+			'<p class="progress-meter-text">', z80per  ,'%</p>',
 			'</span>',
 			'</div>',
+			'<p class="text-right"><small>(',z80tot,' out of ', z80max,')</small></p>',
 			'<table>',
 			'<thead>',
 			'<tr>',
