@@ -127,9 +127,10 @@ var Z80 = {
 				Z80.utils.flag_H(n === 0x10);
 				Z80.utils.flag_F5(Z80.utils.rdBit(5,n));
 				Z80.utils.flag_F3(Z80.utils.rdBit(3,n));
-				Z80.clock.m = 4;
 				Z80.reg.pc += 1;
 				return n
+			} else {
+				n = (Z80.reg.hl + n) & 0xffff;
 			}			
 		},
 		swp: function(arr){
@@ -1250,11 +1251,12 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0xc5;
 		// },
-		// 0xc6: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0xc6;
-		// },
+		0xc6: function(){// add a, *
+			Z80.reg.a = Z80.mmu.rb(Z80.reg.pc+1);	
+			Z80.clock.m = 7;
+			Z80.reg.pc += 1; // additional 1 increment for pc out of the original add8bit instruction
+			return 0xc6;
+		},
 		// 0xc7: function(){//nop
 		// 	Z80.reg.pc += 3;
 		//	Z80.clock.m = 4; 	
