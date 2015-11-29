@@ -1643,6 +1643,8 @@ var Z80 = {
 		for (key in this.reg) {
 			this.reg[key] = 0;
 		}
+		Z80.clock.t = 0;
+		Z80.clock.m = 0;
 		Z80.mem = new Uint8ClampedArray(65535);
 		if (debug) {
 			$(document).trigger('op', {
