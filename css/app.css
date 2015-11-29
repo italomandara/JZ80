@@ -1512,7 +1512,7 @@ textarea {
     border: 1px solid #8a8a8a;
     background: #fefefe;
     outline: none;
-    box-shadow: 0 0 5px #cacaca;
+    box-shadow: 0 0 2px #cacaca;
     transition: box-shadow 0.5s, border-color 0.25s ease-in-out; }
 
 textarea {
@@ -3678,8 +3678,8 @@ table.hover tr:nth-of-type(even):hover {
   outline: none; }
 
 #input textarea {
-  min-height: 422px;
-  background: #000;
+  margin-top: 20px;
+  min-height: 222px;
   color: #445577; }
 
 .notempty {
@@ -3697,7 +3697,7 @@ table.hover tr:nth-of-type(even):hover {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 0.8rem; }
 
-#regs, #last-op {
+#regs {
   font-family: "Lucida Console", Monaco, monospace; }
 
 #mem .input-group, #regs .input-group {
@@ -3716,3 +3716,7 @@ table.hover tr:nth-of-type(even):hover {
 
 .row.padded {
   padding: 0.5rem; }
+
+.input-group-field {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }

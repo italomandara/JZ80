@@ -34,17 +34,18 @@ var debgr = function(obj) {
 	} else {
 		var css_class = 'notempty';
 		$('#last-op').append(obj.name ? ops_table[obj.name].name + ' - ' : '');
+		console.log(obj.name ? ops_table[obj.name].name + ' - ' : '');
 		$('#regs').html('');
 		$('#clock-t').text(Z80.clock.t);
 		$('#clock-m').text(Z80.clock.m);
 		for (key in Z80.reg) {
-			$('#regs').append(['<div class="input-group ', Z80.reg[key] ? css_class : '', '"><span class="input-group-label">', key, ':</span><input class="input-group-field js-write-reg" type="text" data-reg="', key, '" placeholder="', binary(Z80.reg[key], (key === 'sp' || key === 'pc' || key === 'ix' || key === 'iy') ? 16 : 8), '"></div>'].join(''));
+			$('#regs').append(['<div class="small-6 columns"><div class="input-group ', Z80.reg[key] ? css_class : '', '"><span class="input-group-label">', key, ':</span><input class="input-group-field js-write-reg" type="text" data-reg="', key, '" placeholder="', binary(Z80.reg[key], (key === 'sp' || key === 'pc' || key === 'ix' || key === 'iy') ? 16 : 8), '"></div></div>'].join(''));
 		}
 
 		$('#mem').html('');
 		for (i = offset; i < Z80.mem.length / page_elements + offset; i++) {
 			$('#mem').append([
-				'<div class="small-6 medium-3 large-2 xlarge-1 column ', Z80.mem[i] ? css_class : '', '"><div class="input-group"><span class="input-group-label">', hex(i, 16), ': </span><input class="input-group-field js-write-mem" type="text" id="', i, '" placeholder="', hex(Z80.mem[i]), '"">'
+				'<div class="small-4 medium-3 large-2 xlarge-1 column ', Z80.mem[i] ? css_class : '', '"><div class="input-group"><span class="input-group-label">', hex(i, 16), ': </span><input class="input-group-field js-write-mem" type="text" id="', i, '" placeholder="', hex(Z80.mem[i]), '"">'
 				// , '<a class="input-group-button button"></a></div></div>'
 			].join(''));
 		}
@@ -99,14 +100,26 @@ $(function() {
 			'<div class="row padded mt40"><div class="hide float-left"><label>Paginate by<input class="js-paginate-by" type="number" value="', paginate_by, '"></label></div><div class="float-left"><ul id="select" class="pagination" role="navigation" aria-label="Pagination"></ul></div></div>',
 			'<div class="row padded">',
 			'<div class="medium-7 large-8 column" ><div id="mem" class="row"></div></div>',
-			'<div id="regs" class="medium-3 large-2 column" ></div>',
-			'<div id="input" class="medium-2 large-2 column">',
-			'<textarea id="op"></textarea>',
-			'<button class="expanded button js-exec">Execute</button>',
-			'<p id="last-op"></p>',
+			'<div class="medium-5 large-4 column">',
+				'<ul class="tabs" data-tabs id="example-tabs">',
+					'<li class="tabs-title is-active"><a href="#regs" aria-selected="true">Registers</a></li>',
+					'<li class="tabs-title"><a href="#input">Enter Commands</a></li>',
+					'<li class="tabs-title"><a href="#log">Log</a></li>',
+				'</ul>',
+				'<div class="tabs-content" data-tabs-content="example-tabs">',
+					'<div class="tabs-panel is-active clearfix" id="regs">',
+					'</div>',
+					'<div class="tabs-panel clearfix" id="input">',
+						'<div class="small-12 column">',
+						'<textarea id="op"></textarea>',
+						'<button class="expanded button js-exec">Execute</button>',
+					'</div></div>',
+					'<div class="tabs-panel clearfix" id="log">',
+						'<p id="last-op"></p>',
+					'</div>',
+				'</div>',
+			'</div>',
 
-			'</div>',
-			'</div>',
 			'<div class="reveal" id="oplist" data-reveal ></div>',
 			'<div class="tiny reveal" id="error" data-reveal >',
 			'<h4>Error:</h4><p id="error-type"></p>',

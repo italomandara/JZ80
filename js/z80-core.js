@@ -19,8 +19,14 @@ var Z80 = {
 		flag_Z: function(state) {
 			Z80.reg.f = Z80.utils.setBit(6, Z80.reg.f, state);
 		},
+		flag_F5: function(state) {
+			Z80.reg.f = Z80.utils.setBit(0, Z80.reg.f, state);
+		},
 		flag_H: function(state) {
 			Z80.reg.f = Z80.utils.setBit(4, Z80.reg.f, state);
+		},
+		flag_F3: function(state) {
+			Z80.reg.f = Z80.utils.setBit(0, Z80.reg.f, state);
 		},
 		flag_V: function(state) {
 			Z80.reg.f = Z80.utils.setBit(2, Z80.reg.f, state);
@@ -82,19 +88,6 @@ var Z80 = {
 			Z80.reg.pc += 1;
 			Z80.clock.m = 6;
 		},
-		incr: function(reg){
-			Z80.clock.m = 4;
-			if (Z80.reg[reg] === 0xFF) {
-				Z80.utils.flag_C(true);
-				Z80.reg[reg] = 0;
-				return 0x04;
-			}
-			if (Z80.reg[reg] >= 0x0F) {
-				Z80.utils.flag_H(true);
-			}
-			Z80.reg[reg]++;
-			Z80.reg.pc += 1;
-		},
 		decr: function(reg){
 			Z80.clock.m = 4;
 			if (Z80.reg[reg] === 0xFF) {
@@ -109,20 +102,18 @@ var Z80 = {
 			Z80.reg.pc += 1;
 		},
 		inc: function(n,double){
-			n++;
 			if (arguments.length<2){
-				Z80.clock.m = 11;
-				if (n === 0x80) {
-					Z80.utils.flag_C(true);
-					n = 0;
-					return 0x04;
-				}
-				if (n >= 0x0F) {
-					Z80.utils.flag_H(true);
-				}
+				n = (n+1) & 0xff;
+				Z80.utils.flag_V(n >= 0x7f);
+				Z80.utils.flag_S(n === 0x80);
+				Z80.utils.flag_H(n === 0x10);
+				Z80.utils.flag_F5(Z80.utils.rdBit(5,n));
+				Z80.utils.flag_F3(Z80.utils.rdBit(3,n));
+				Z80.clock.m = 4;
 				Z80.reg.pc += 1;
 				return n
 			} else {
+				n++;
 				Z80.reg.pc += 1;
 				Z80.clock.m = 6;
 				return n;
@@ -175,7 +166,7 @@ var Z80 = {
 			return 0x03;
 		},
 		0x04: function() { // INC B
-			Z80.core.incr('b');
+			Z80.reg.b = Z80.core.inc(Z80.reg.b);
 			return 0x04;
 		},
 		// 0x05: function(){//nop
@@ -217,7 +208,7 @@ var Z80 = {
 		//	return 0x0b;
 		// },
 		0x0c: function(){ // INC c
-			Z80.core.incr('c');	
+			Z80.reg.c = Z80.core.inc(Z80.reg.c);
 			return 0x0c;
 		},
 		// 0x0d: function(){//nop
@@ -258,7 +249,7 @@ var Z80 = {
 			return 0x13;
 		},
 		0x14: function(){ // INC d
-			Z80.core.incr('d');	
+			Z80.reg.d = Z80.core.inc(Z80.reg.d);	
 			return 0x14;
 		},
 		// 0x15: function(){//nop
@@ -299,7 +290,7 @@ var Z80 = {
 		//	return 0x1b;
 		// },
 		0x1c: function(){ // INC e
-			Z80.core.incr('e');
+			Z80.reg.e = Z80.core.inc(Z80.reg.e);
 			return 0x1c;
 		},
 		// 0x1d: function(){//nop
@@ -335,12 +326,12 @@ var Z80 = {
 			Z80.clock.m = 16;
 			return 0x22;
 		},
-		0x23: function(){ // INC de
-			Z80.core.incrr('d','e'); 	
+		0x23: function(){ // INC hl
+			Z80.core.incrr('h','l'); 	
 			return 0x23;
 		},
 		0x24: function(){ // INC h
-			Z80.core.incr('h');	
+			Z80.reg.h = Z80.core.inc(Z80.reg.h);	
 			return 0x24;
 		},
 		// 0x25: function(){//nop
@@ -381,7 +372,7 @@ var Z80 = {
 		//	return 0x2b;
 		// },
 		0x2c: function(){ // INC l
-			Z80.core.incr('l');	
+			Z80.reg.l = Z80.core.inc(Z80.reg.l);
 			return 0x2c;
 		},
 		// 0x2d: function(){//nop
@@ -463,7 +454,7 @@ var Z80 = {
 		//	return 0x3b;
 		// },
 		0x3c: function(){// INC a
-			incr('a'); 	
+			Z80.reg.a = Z80.core.inc(Z80.reg.a);	
 			return 0x3c;
 		},
 		// 0x3d: function(){//nop
@@ -1613,8 +1604,13 @@ var Z80 = {
 			});
 			return false;
 		}
-		if(this.op[this.mmu.rb(this.reg.pc)]() && !this.halt){
-			this.clock.t += this.clock.m; 
+		var opname = this.op[this.mmu.rb(this.reg.pc)]();
+		if(opname && !this.halt){
+			this.clock.t += this.clock.m;
+			$(document).trigger('op', {
+				name: opname,
+				type: 'ready'
+			});
 			this.fetch();
 		}
 	},

@@ -50,8 +50,9 @@
 };
 
 #input textarea{
-min-height: 422px;
-background: #000;
+margin-top: 20px;
+min-height: 222px;
+// background: #000;
 color: $primary-color;
 }
 
@@ -73,7 +74,7 @@ color: $primary-color;
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 0.8rem;
 }
-#regs, #last-op{
+#regs{
 	font-family: "Lucida Console", Monaco, monospace;
 }
 #mem, #regs{
@@ -100,3 +101,8 @@ color: $primary-color;
 // .menu-text:first-child{
 // 	padding-left: 0;
 // }
+
+.input-group-field{
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
