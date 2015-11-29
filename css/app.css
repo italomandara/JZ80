@@ -2460,7 +2460,7 @@ body {
 
 .pagination {
   margin-left: 0;
-  margin-bottom: 1rem; }
+  margin-bottom: 0; }
   .pagination::before, .pagination::after {
     content: ' ';
     display: table; }

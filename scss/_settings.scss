@@ -400,7 +400,8 @@ $orbit-control-zindex: 10;
 // --------------
 
 $pagination-font-size: rem-calc(10);
-$pagination-margin-bottom: $global-margin;
+// $pagination-margin-bottom: $global-margin;
+$pagination-margin-bottom: 0;
 $pagination-item-color: $black;
 $pagination-item-padding: rem-calc(3 10);
 $pagination-item-spacing: rem-calc(1);
