@@ -128,7 +128,7 @@ $(function() {
 		paginate(0);
 		var oplist = [
 			'<h4>Available operations:</h4>',
-			'<p>In this table: on the left hexadecial code of the Operation, on the right </p>',
+			'<p>In this table: on the left hexadecial code of the Operation, on the right mnemonic and description </p>',
 			'<div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">',
 			'<span class="progress-meter" style="width: ', z80per ,'%">',
 			'<p class="progress-meter-text">', z80per  ,'%</p>',
