@@ -112,7 +112,7 @@ $(function() {
 					'</div>',
 					'<div class="tabs-panel clearfix" id="input">',
 						'<div class="small-12 column">',
-						'<textarea id="op"></textarea>',
+						'<textarea id="op" placeholder="Example: 01FFFF (ld bc, nn) *you can chain multiple ops"></textarea>',
 						'<button class="expanded button js-exec">Execute</button>',
 					'</div></div>',
 					'<div class="tabs-panel clearfix" id="log">',
