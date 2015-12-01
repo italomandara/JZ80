@@ -56,7 +56,7 @@ var paginate = function(offset) {
 	var current_page = Math.floor(offset / paginate_by),
 		select = [];
 	select.push(['<li><a href="#" class="', !current_page ? 'disabled ' : '', ' js-pageprev" aria-label="Prev page">Prev <span class="show-for-sr">page</span></a></li>', '<li><a href="#" class="', !current_page === limit ? 'disabled ' : '', 'js-pagenext" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>'].join(''));
-	var limit = Math.floor((Z80.mem.length - 1) / paginate_by),
+	var limit = Math.floor((Z80.mem.length + paginate_by - 1) / paginate_by),
 		middle_page = Math.floor(limit / 2);
 
 	for (i = 0; i < limit; i++) {
