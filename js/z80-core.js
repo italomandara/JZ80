@@ -15,27 +15,35 @@ var Z80 = {
 		},
 		flag_S: function(state) {
 			Z80.reg.f = Z80.utils.setBit(7, Z80.reg.f, state);
+			return state;
 		},
 		flag_Z: function(state) {
 			Z80.reg.f = Z80.utils.setBit(6, Z80.reg.f, state);
+			return state;
 		},
 		flag_F5: function(state) {
-			Z80.reg.f = Z80.utils.setBit(0, Z80.reg.f, state);
+			Z80.reg.f = Z80.utils.setBit(5, Z80.reg.f, state);
+			return state;
 		},
 		flag_H: function(state) {
 			Z80.reg.f = Z80.utils.setBit(4, Z80.reg.f, state);
+			return state;
 		},
 		flag_F3: function(state) {
-			Z80.reg.f = Z80.utils.setBit(0, Z80.reg.f, state);
+			Z80.reg.f = Z80.utils.setBit(3, Z80.reg.f, state);
+			return state;
 		},
 		flag_V: function(state) {
 			Z80.reg.f = Z80.utils.setBit(2, Z80.reg.f, state);
+			return state;
 		},
 		flag_N: function(state) {
 			Z80.reg.f = Z80.utils.setBit(1, Z80.reg.f, state);
+			return state;
 		},
 		flag_C: function(state) {
 			Z80.reg.f = Z80.utils.setBit(0, Z80.reg.f, state);
+			return state;
 		},
 	},
 	core: {
@@ -50,10 +58,6 @@ var Z80 = {
 		ld$nntorr: function(reg1, reg2) {
 			var addr = Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1));
 			Z80.mmu.ww(addr, [Z80.reg[reg1], Z80.reg[reg2]]);
-		},
-		ldRegtoMemDir: function(reg) {
-			var addr = Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1));
-			Z80.mmu.wb(addr, Z80.reg[reg]);
 		},
 		ld$mmtor: function(reg1, reg2) {
 			var data = Z80.mmu.rw(Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1)));
@@ -104,11 +108,17 @@ var Z80 = {
 		inc: function(n,double){
 			if (arguments.length<2){
 				n = (n+1) & 0xff;
-				Z80.utils.flag_V(n >= 0x7f);
-				Z80.utils.flag_S(n === 0x80);
-				Z80.utils.flag_H(n === 0x10);
-				Z80.utils.flag_F5(Z80.utils.rdBit(5,n));
-				Z80.utils.flag_F3(Z80.utils.rdBit(3,n));
+				Z80.utils.flag_N(false);
+				Z80.utils.flag_C(n > 0xff);
+				Z80.utils.flag_V(n > 0xff);
+				Z80.utils.flag_S(n > 0x7f && n < 0xff);
+				Z80.utils.flag_H(n > 0x0f);
+				
+				// Z80.utils.flag_F5(Z80.utils.rdBit(5,Z80.mem[pc]));
+				// Z80.utils.flag_F3(Z80.utils.rdBit(3,Z80.mem[pc]));
+				this.f3 = (n & 0x8);
+				this.f5 = (n & 0x20);
+				
 				Z80.clock.m = 4;
 				Z80.reg.pc += 1;
 				return n
@@ -121,16 +131,32 @@ var Z80 = {
 		},
 		add: function(n,double){
 			if (arguments.length<2){
-				n = (Z80.reg.a + n) & 0xff;
-				Z80.utils.flag_V(n >= 0x7f);
-				Z80.utils.flag_S(n === 0x80);
-				Z80.utils.flag_H(n === 0x10);
-				Z80.utils.flag_F5(Z80.utils.rdBit(5,n));
-				Z80.utils.flag_F3(Z80.utils.rdBit(3,n));
+				var t = (Z80.reg.a + n) & 0xff;
+				Z80.utils.flag_N(false);
+				Z80.utils.flag_C(n > 0xff);
+				Z80.utils.flag_V(n > 0xff);
+				Z80.utils.flag_S(n > 0x7f && n < 0xff);
+				Z80.utils.flag_H(Z80.utils.rdBit(3,n) & Z80.utils.rdBit(3,Z80.reg.a));
+				
+				// Z80.utils.flag_F5(Z80.utils.rdBit(5,Z80.mem[pc]));
+				// Z80.utils.flag_F3(Z80.utils.rdBit(3,Z80.mem[pc]));
+
+				Z80.utils.flag_F3(t & 0x8);
+				Z80.utils.flag_F5(t & 0x20);
+				
 				Z80.reg.pc += 1;
-				return n
+				return t
 			} else {
-				n = (Z80.reg.hl + n) & 0xffff;
+				Z80.utils.flag_C(n > 0xffff);
+				Z80.utils.flag_H(Z80.utils.rdBit(11,n) & Z80.utils.rdBit(11,Z80.reg.a));
+				Z80.utils.flag_N(false);
+				var t = (Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l]) + n) & 0xffff;
+
+				Z80.utils.flag_F3(t & 0x800);
+				Z80.utils.flag_F5(t & 0x2000);
+
+				Z80.reg.pc += 1;
+				return t;
 			}			
 		},
 		swp: function(arr){
@@ -205,11 +231,12 @@ var Z80 = {
 			Z80.clock.m = 4;
 			return 0x08;
 		},
-		// 0x09: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0x09;
-		// },
+		0x09: function(){//add hl, bc
+			Z80.reg.h = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.b,Z80.reg.c]),16))[0];
+			Z80.reg.l = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.b,Z80.reg.c]),16))[1];
+			Z80.clock.m = 11; 	
+			return 0x09;
+		},
 		0x0a: function() { // LD A, (BC)
 			Z80.core.ld$rrtor('a', 'b', 'c');
 			Z80.reg.pc += 1;
@@ -287,11 +314,12 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0x18;
 		// },
-		// 0x19: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0x19;
-		// },
+		0x19: function(){//add hl, de
+			Z80.reg.h = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.d,Z80.reg.e]),16))[0];
+			Z80.reg.l = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.d,Z80.reg.e]),16))[1];
+			Z80.clock.m = 11; 	
+			return 0x19;
+		},
 		0x1a: function() { //LD A, (DE)
 			Z80.core.ld$rrtor('a', 'd', 'e');
 			Z80.reg.pc += 1;
@@ -369,11 +397,12 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0x28;
 		// },
-		// 0x29: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0x29;
-		// },
+		0x29: function(){///add hl, hl
+			Z80.reg.h = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l]),16))[0];
+			Z80.reg.l = Z80.utils.split8(Z80.core.add(Z80.utils.dBy2W([Z80.reg.h,Z80.reg.l]),16))[1];
+			Z80.clock.m = 11; 	
+			return 0x29;
+		},
 		0x2a: function() { // ld hl (**)
 			Z80.core.ld$mmtor('h', 'l');
 			Z80.reg.pc += 3;
@@ -451,11 +480,12 @@ var Z80 = {
 		//	Z80.clock.m = 4; 	
 		//	return 0x38;
 		// },
-		// 0x39: function(){//nop
-		// 	Z80.reg.pc += 3;
-		//	Z80.clock.m = 4; 	
-		//	return 0x39;
-		// },
+		0x39: function(){// add hl, sp
+			Z80.reg.h = Z80.utils.split8(Z80.core.add(Z80.reg.sp,16))[0];
+			Z80.reg.l = Z80.utils.split8(Z80.core.add(Z80.reg.sp,16))[1];
+			Z80.clock.m = 11; 		
+			return 0x39;
+		},
 		0x3a: function() { // ld a,(**)
 			Z80.core.ldntor('a', Z80.mem[Z80.utils.dBy2W(Z80.mmu.rw(Z80.reg.pc + 1))]);
 			Z80.reg.pc += 3;
