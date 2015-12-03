@@ -1632,7 +1632,7 @@ var _Z80 = function() {
 	var S = this;
 	
 	this.utils = new Utils(S);
-	this.Cbop = new Cbop(S);
+	this.cbop = new Cbop(S);
 	this.edop = new Edop(S);
 	this.ddop = new Ddop(S);
 	this.fdop = new Fdop(S);
