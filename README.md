@@ -2,10 +2,33 @@
 ## Another Javascript Zilog Z80 CPU emulator
 this project started with a simple thought in mind: user experience, the aim is just make your emulator (gb, msx, ZX spectrum, etc. ) as playable as possible, the cpu will run at maximum emulated speed (Z80 clock not emulated, just storing in a special register the clock variables). The emulator is still in early development and is not fully functional, it has a basic debug console based on foundation.
 
-##quick start
+##License
+###The MIT License (MIT)
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+##Quick start
 to test download the entire folder and run Z80.html
 
-##how it works
+##How it works
 here is the structure of the "class" _Z80:
 ```
 _Z80
