@@ -9,8 +9,8 @@ to test download the entire folder and run Z80.html
 here is the structure of the "class" _Z80:
 ```
 _Z80
-   |---utils
-   |---core
+   |---utils (some binary function to simplify my life)
+   |---core (reusable cpu routines used mostly by the dispatcher)
    |---op (primary dispatcher)
    |---cbop (secondary dispatcher)
    |---edop (secondary dispatcher)
