@@ -71,11 +71,11 @@ color: $primary-color;
 
 }
 #mem,#regs, #mem input{
-	font-family: "Lucida Console", Monaco, monospace;
+	font-family: 'Roboto Mono',"Lucida Console", Monaco, monospace;
 	font-size: 0.8rem;
 }
 #regs{
-	font-family: "Lucida Console", Monaco, monospace;
+	font-family: 'Roboto Mono',"Lucida Console", Monaco, monospace;
 }
 #mem, #regs{
 	.input-group{
@@ -105,4 +105,10 @@ color: $primary-color;
 .input-group-field{
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
+}
+.menu-text, .top-bar .dropdown.menu > li > a {
+  color: $white;
+}
+.dropdown.menu .has-submenu.is-down-arrow > a::after {
+	border-color: $white transparent transparent;
 }

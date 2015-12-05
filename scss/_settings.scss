@@ -58,7 +58,8 @@ $black: #0a0a0a;
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+// $body-font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+$body-font-family: 'Oxygen', sans-serif;
 $body-antialiased: true;
 $text-direction: ltr;
 $global-margin: 1rem;
@@ -320,7 +321,7 @@ $helptext-font-size: rem-calc(10);
 $helptext-font-style: italic;
 $input-prefix-color: $black;
 $input-prefix-background: $light-gray;
-$input-prefix-border: 1px solid $medium-gray;
+$input-prefix-border: 1px solid transparent;
 $input-prefix-padding: 0.5rem;
 $form-label-color: $black;
 $form-label-font-size: rem-calc(12);
@@ -329,13 +330,13 @@ $form-label-line-height: 1.8;
 $select-background: #fafafa;
 $select-triangle-color: #333;
 $select-radius: $global-radius;
-$input-color: $dark-gray;
+$input-color: $black;
 $input-font-family: inherit;
 $input-font-size: rem-calc(12);
-$input-background: $white;
+$input-background: lighten($medium-gray,5%);
 $input-background-focus: $white;
 $input-background-disabled: $light-gray;
-$input-border: 1px solid $medium-gray;
+$input-border: 1px solid transparent;
 $input-border-focus: 1px solid $dark-gray;
 $input-shadow: none;
 $input-shadow-focus: 0 0 2px $medium-gray;
@@ -487,15 +488,18 @@ $show-header-for-stacked: false;
 // --------
 
 $tab-margin: 0;
-$tab-background: $white;
+$tab-background: $medium-gray;
 $tab-background-active: $light-gray;
-$tab-border: $light-gray;
+// $tab-border: $light-gray;
+$tab-border: none;
 $tab-item-color: foreground($tab-background, $primary-color);
 $tab-item-background-hover: $white;
-$tab-item-padding: 1.25rem 1.5rem;
+$tab-item-padding: 1rem 1rem;
 $tab-expand-max: 6;
-$tab-content-background: $white;
-$tab-content-border: $light-gray;
+// $tab-content-background: $white;
+$tab-content-background: lighten($medium-gray,15%);
+// $tab-content-border: $light-gray;
+$tab-content-border: none;
 $tab-content-color: foreground($tab-background, $primary-color);
 $tab-content-padding: 1rem;
 
@@ -525,7 +529,7 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-$topbar-background: #f0f0f0;
+$topbar-background: #222;
 $topbar-link-color: #fff;
 $topbar-input-width: 200px;
 
