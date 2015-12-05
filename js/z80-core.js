@@ -3,10 +3,10 @@ var Utils = function(that) {
 	this.dBy2W = function(arr) {
 		return (arr[0] << 8) | arr[1];
 	};
-	this.Split8 = function(data) {
+	this.split8 = function(data) {
 		return [data >> 8, data & 0xff];
 	};
-	this.SetBit = function(pos, num, set) {
+	this.setBit = function(pos, num, set) {
 		return set ? (1 << pos) | num : ~(1 << pos) & num;
 	};
 	this.rdBit = function(pos, num) {
@@ -14,36 +14,44 @@ var Utils = function(that) {
 		return (num & mask) != 0 ? 1 : 0;
 	};
 	this.flag_S = function(state) {
+		var prevstate = S.utils.rdBit(7, S.reg.f, state);
 		S.reg.f = S.utils.setBit(7, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_Z = function(state) {
+		var prevstate = S.utils.rdBit(6, S.reg.f, state);
 		S.reg.f = S.utils.setBit(6, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_F5 = function(state) {
+		var prevstate = S.utils.rdBit(5, S.reg.f, state);
 		S.reg.f = S.utils.setBit(5, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_H = function(state) {
+		var prevstate = S.utils.rdBit(4, S.reg.f, state);
 		S.reg.f = S.utils.setBit(4, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_F3 = function(state) {
+		var prevstate = S.utils.rdBit(3, S.reg.f, state);
 		S.reg.f = S.utils.setBit(3, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_V = function(state) {
+		var prevstate = S.utils.rdBit(2, S.reg.f, state);
 		S.reg.f = S.utils.setBit(2, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_N = function(state) {
+		var prevstate = S.utils.rdBit(1, S.reg.f, state);
 		S.reg.f = S.utils.setBit(1, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 	this.flag_C = function(state) {
+		var prevstate = S.utils.rdBit(0, S.reg.f, state);
 		S.reg.f = S.utils.setBit(0, S.reg.f, state);
-		return state;
+		return state ^ prevstate;
 	};
 };
 var Core = function(that) {
@@ -137,8 +145,8 @@ var Core = function(that) {
 			S.utils.flag_C(n > 0xff);
 			S.utils.flag_V(n > 0xff);
 			S.utils.flag_S(n > 0x7f && n < 0xff);
-			S.utils.flag_H(S.utils.rdBit(3, n) & S.utils.rdBit(3, S.reg.a));
-
+			// S.utils.flag_H(S.utils.rdBit(3, n) & S.utils.rdBit(3, S.reg.a));
+			S.utils.flag_H(t>0x0f);
 			// S.utils.flag_F5(S.utils.rdBit(5,S.mem[pc]));
 			// S.utils.flag_F3(S.utils.rdBit(3,S.mem[pc]));
 
